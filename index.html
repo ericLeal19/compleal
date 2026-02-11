@@ -1,13 +1,99 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <title>Meu Site de Ofertas</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Compleal | Ofertas de Informática</title>
+    <style>
+        /* Configurações Gerais */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+        }
+
+        h1 { color: #333; }
+
+        /* Container dos Cards */
+        .container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        /* Estilo do Card */
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            padding: 15px;
+            text-align: center;
+            transition: transform 0.3s;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+        }
+
+        .card img {
+            max-width: 100%;
+            height: 200px;
+            object-fit: contain;
+            border-bottom: 1px solid #eee;
+            margin-bottom: 10px;
+        }
+
+        .card h2 {
+            font-size: 1.1rem;
+            color: #444;
+            height: 50px; /* Mantém o alinhamento mesmo com nomes longos */
+            overflow: hidden;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #27ae60;
+            margin: 10px 0;
+        }
+
+        /* Botão de Afiliado */
+        .btn-link {
+            display: inline-block;
+            background-color: #2575fc;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .btn-link:hover {
+            background-color: #1a5abd;
+        }
+    </style>
 </head>
 <body>
-    <h1>Melhores Ofertas de Informática</h1>
-    <p>Em breve, os melhores reviews e links aqui!</p>
-        <p>Em breve, os melhores produtos e preços!</p>
-        <p>Bota qualquer coisa, tanto faz!</p>
-    <a href="https://www.amazon.com.br">Comprar na Amazon</a>
+
+    <h1>Ofertas de Informática - Compleal</h1>
+
+    <div class="container">
+        
+        <div class="card">
+            <img src="https://m.media-amazon.com/images/I/61K7S8Y-VML._AC_SX679_.jpg" alt="Mouse Gamer">
+            <h2>Mouse Gamer Logitech G203 Lightsync RGB</h2>
+            <p class="price">R$ 139,90</p>
+            <a href="SEU_LINK_DE_AFILIADO_AQUI" rel="nofollow sponsored" target="_blank" class="btn-link">Ver na Amazon</a>
+        </div>
+
+        </div>
+
 </body>
 </html>
