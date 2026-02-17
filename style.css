@@ -1,0 +1,103 @@
+body { /* Estilos para o corpo da página */
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f2ff;
+}
+
+.nav-top {
+    display: flex;
+    align-items: center;      /* Alinha os itens pelo topo */
+    justify-content: space-between; /* Distribui: logo na esquerda, tools na direita */
+    padding: 10px 50px;
+    background-color: #0d0b26; /* Sua cor azul meia-noite */
+    position: relative; /* Para posicionar a barra de filtros abaixo */
+    height: 90px; /* Altura da barra de navegação */
+    gap: 20px; /* Espaçamento entre os itens */
+}
+
+.logo{ /* Estilos para o logo */
+    width: 85px; 
+    height: auto;   
+}
+
+.nav-tools { /* Estilos para as ferramentas do usuário */
+    display: flex;
+    gap: 20px;
+    font-size: 14px;
+    color: white;
+    padding-top: 5px; /* Pequeno ajuste para alinhar verticalmente com o logo */
+    text-align: center; /* Centraliza o texto dentro de cada item */
+    cursor: pointer; /* Indica que são clicáveis */
+}
+
+.nav-logo, .nav-tools {
+    position: relative;
+    z-index: 2; /* Mantém logo e ferramentas acima de qualquer fundo */
+}
+
+.nav-search-container { /* Estilos para o contêiner da barra de pesquisa */
+   position: absolute;
+    left: 50%;          /* Move o início do bloco para o meio da página */
+    top: 75%;           /* Move para baixo (ajuste aqui para "um pouco abaixo") */
+    transform: translate(-50%, -50%); /* Alinha o CENTRO do bloco com o CENTRO da página */
+    width: 100%;
+    max-width: 600px;   /* Largura da sua barra */
+    display: flex;
+    justify-content: center; /* Centraliza a barra horizontalmente */
+    z-index: 1; /* Garante que a barra fique acima de outros elementos */
+}
+
+/* Barra de Pesquisa */
+.nav-search { /* Estilos para a barra de pesquisa */
+    display: flex;
+    flex-grow: 1; /* Faz a barra de pesquisa ocupar o espaço restante */
+    max-width: 600px; /* Limita a largura máxima da barra de pesquisa */
+    margin: 0; /* Espaçamento horizontal */
+    width: 100%; /* Ocupa todo o container de 600px */
+}
+
+.nav-search input[type="text"] { /* Estilos para o campo de texto da barra de pesquisa */
+    flex-grow: 1; /* Faz o campo de texto ocupar o espaço restante */
+    padding: 8px;
+    border: none;
+    border-radius: 4px 0 0 4px; /* Arredonda os cantos do lado esquerdo */
+}
+
+.nav-search button[type="submit"] { /* Estilos para o botão de busca */
+    padding: 8px 12px;
+    background-color: #ff9113; /* Cor laranja para o botão de busca */
+    color: #0d0b26;/* Cor do texto no botão de busca */
+    border: none;
+    border-radius: 0 4px 4px 0; /* Arredonda os cantos do lado direito */
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Barra de Filtros */
+.nav-bottom-filters { /* Estilos para a parte inferior da barra de navegação */
+    background-color: #4e6c76;
+    padding: 5px 20px;
+}
+
+/* Botões dos Filtros */
+.nav-bottom-filters ul { /* Estilos para a lista de links na parte inferior da barra de navegação */
+    display: flex;
+    gap: 20px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+/* Texto dos Botões dos Filtros */
+.nav-bottom-filters a { /* Estilos para os links na parte inferior da barra de navegação */
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px;
+    display: block;
+}
+
+.nav-bottom-filters a:hover { /* Estilos para o efeito hover nos links da parte inferior da barra de navegação */
+    background-color: #3b4a52;
+    border-radius: 4px;
+}
