@@ -31,8 +31,15 @@ function carregarComponentes() {
         })
         .catch(erro => console.error("Erro ao carregar o cabeçalho:", erro));
 
-    // O mesmo para o footer
-    // fetch(prefix + 'components/footer.html') ...
+    // Carrega o Footer
+    fetch(prefix + 'components/footer.html')
+    .then(response => response.text())
+    .then(data => {
+        // Se precisar corrigir caminhos no footer também:
+        let htmlCorrigido = data.replace(/href="index\.html"/g, `href="${prefix}index.html"`);
+        document.getElementById('footer-placeholder').innerHTML = htmlCorrigido;
+    })
+    .catch(erro => console.error("Erro ao carregar o rodapé:", erro));
 }
 
 // Deixe apenas esta linha, apague o carregarComponentes() solto que tinha no fim

@@ -1,0 +1,233 @@
+body {
+    display: flex;
+    flex-direction: column;
+    margin: 0; /* Zero não precisa de "px" */
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f2ff;
+}
+
+html, body {
+    height: 100%;
+}
+
+/* O placeholder do cabeçalho e o main ocupam o espaço disponível */
+main.product-grid {
+    flex: 1;
+}
+
+/* --- CABEÇALHO --- */
+.nav-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    padding: 15px 5%;
+    background-color: #0d0b26;
+    gap: 20px;
+    height: auto;
+    width: auto;
+}
+
+.logo {
+    width: 85px; 
+    height: auto;   
+}
+
+.nav-marca {
+    margin: 0;
+    color: white;
+    font-size: 32px;
+    font-weight: bold;
+    font-family: 'League Spartan', sans-serif;
+}
+
+.nav-tools {
+    display: flex;
+    flex: 2;
+    gap: 10px;
+    align-items: center;
+    list-style: none;
+    justify-content: center;
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+    text-align: center;
+    text-size-adjust: 100%;
+    cursor: pointer;
+    color: white;
+    position: relative;
+    z-index: 2;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    display: block; /* Garante que toda a área seja clicável */
+}
+
+.nav-item {
+    padding: 10px 15px;
+    line-height: 1.4;
+    border-radius: 6px;
+    text-align: center;
+    transition: background-color 0.2s; /* Transição movida para cá */
+}
+
+.nav-item:hover {
+    background-color: #3b4a52;
+    border-radius: 12px;
+}
+
+.nav-search-container {
+    position: static; 
+    transform: none;
+    flex-grow: 1;
+    margin: 0 20px;
+    max-width: 600px;
+    display: flex;
+}
+
+/* Barra de Pesquisa */
+.nav-search {
+    display: flex;
+    flex-grow: 1;
+    max-width: 600px;
+    margin: 5px;
+    width: 100%;
+}
+
+.nav-search input[type="text"] {
+    flex-grow: 1;
+    padding: 8px;
+    border: none;
+    border-radius: 4px 0 0 4px;
+}
+
+.nav-search button[type="submit"] {
+    padding: 8px 12px;
+    background-color: #ff9113;
+    color: #0d0b26;
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Barra de Filtros */
+.nav-bottom-filters {
+    background-color: #4e6c76;
+    padding: 5px 20px;
+}
+
+.nav-bottom-filters ul {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
+
+.nav-bottom-filters a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px;
+    display: block;
+    border-radius: 4px; /* Adicionado para ficar bom na transição */
+    transition: background-color 0.2s; /* Transição suave */
+}
+
+.nav-bottom-filters a:hover {
+    background-color: #3b4a52;
+}
+
+.footer-container {
+    background-color: #0d0b26; /* Mesmo tom do cabeçalho */
+    color: white;
+    padding: 20px 5% 10px;
+    margin-top: 20px;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.footer-brand h2 {
+    margin-bottom: 15px;
+}
+
+.footer-links h3 {
+    color: #ff9113; /* Cor de destaque (Laranja) */
+    font-size: 18px;
+    margin-bottom: 15px;
+}
+
+.footer-links ul {
+    list-style: none;
+    padding: 0;
+}
+
+.footer-links li {
+    margin-bottom: 8px;
+}
+
+.footer-links a {
+    color: #f4f2ff;
+    text-decoration: none;
+    font-size: 14px;
+    transition: color 0.2s;
+}
+
+.footer-links a:hover {
+    color: #ff9113;
+}
+
+.footer-bottom {
+    text-align: center;
+    margin-top: 15px;
+    padding-top: 10px;
+    border-top: 1px solid #4e6c76;
+    font-size: 12px;
+    color: #4e6c76;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 768px) {
+    .nav-top {
+        flex-direction: column;
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .nav-search-container {
+        width: 100%;
+        margin: 0;
+        order: 2;
+    }
+
+    .nav-tools {
+        width: 100%;
+        justify-content: center;
+        order: 3;
+    }
+    
+    .nav-bottom-filters ul {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas no tablet */
+    }
+}
+
+@media (max-width: 480px) {
+    .product-grid {
+        grid-template-columns: 1fr; /* 1 coluna no celular */
+    }
+}
