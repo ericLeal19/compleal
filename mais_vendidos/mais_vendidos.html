@@ -1,27 +1,59 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&display=swap" rel="stylesheet">
-    <title>Compleal - Ofertas de Informática</title>
+    <!-- Configurações Básicas-->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"> <!-- Garante que o site seja renderizado usando a versão mais recente do mecanismo de renderização do navegador, melhorando a compatibilidade e o desempenho.-->
+    <meta charset="UTF-8"> <!-- Define a codificação de caracteres, garantindo acentuação--> 
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Configura a viewport garantindo responsividade e adaptação--> 
+    <meta name="theme-color" content="#0D0B26"> <!-- Integração com dispositivos móveis e a aparência nas redes sociais.-->
+    <title>Compleal - Ofertas, Promoções e Reviews de Artigos Eletrônicos e Informática</title> <!-- Titulo da página, importante para SEO e para os usuários. -->
+    
+    <!-- Meta descrição para SEO, ajudando a melhorar o ranking nos motores de busca e atraindo mais visitantes.--> 
+    <meta name="description" content="A Compleal oferece as melhores ofertas de informática e eletrônicos, reviews de dispositivos gamer e as últimas novidades em tecnologia. Confira!">
+    <meta name="robots" content="index, follow"><!-- Meta que permite que os motores de busca indexem o site e sigam os links, melhorando resultados de busca.-->
+    <link rel="canonical" href="https://compleal.com.br/"> <!-- Link que define/declara a versão oficial do site.--> 
+
+    <!-- Favicon e ícones para diferentes dispositivos, melhorando a experiência do usuário e a identidade visual do site.--> 
+    <link rel="apple-touch-icon" sizes="180x180" href="../logo/web_image/apple-touch-icon.png"> <!-- Ícone para dispositivos Apple--> 
+    <link rel="icon" type="image/png" sizes="32x32" href="../logo/web_image/favicon-32x32.png"> <!-- Favicon para navegadores modernos -->
+    <link rel="icon" type="image/png" sizes="512x512" href="../logo/web_image/android-chrome-512x512.png"> <!-- Ícone para dispositivos Android -->
+    <link rel="icon" type="image/png" sizes="16x16" href="../logo/web_image/favicon-16x16.png"> <!-- Favicon para navegadores mais antigos -->
+    <link rel="shortcut icon" href="../logo/favicon.ico" type="image/x-icon"> <!-- Favicon para navegadores que suportam apenas .ico -->
+    <link rel="manifest" href="../logo/web_image/site.webmanifest"> <!-- Manifesto para PWA, permitindo que o site seja instalado como um aplicativo -->
+
+    <!-- Meta tags para Open Graph e Twitter Card, melhorando a aparência do site quando compartilhado em redes sociais.-->
+    <meta property="og:type" content="website"> <!-- Define o tipo de conteúdo para Open Graph, indicando que é um site.-->
+    <meta property="og:url" content="https://compleal.com.br/"> <!-- URL canônica do site, garantindo que os links mostrem a versão correta do site.-->
+    <meta property="og:title" content="Compleal - Ofertas de Informática"> <!-- Título, que aparecerá quando o site for compartilhado.-->
+    <meta property="og:description" content="As melhores ofertas e reviews de tecnologia em um só lugar."> <!-- Descrição, que aparecerá quando o site for compartilhado.-->
+    <meta property="og:image" content="https://compleal.com.br/logo/web_image/android-chrome-512x512.png"> <!-- Imagem que aparecerá quando o site for compartilhado.-->
+    
+    <!--Meta tags para reconhecimento do Site no twitter-->
+    <meta name="twitter:card" content="summary"> <!-- Define o tipo de cartão para Twitter, indicando que deve usar uma imagem.-->
+    <meta name="twitter:url" content="https://compleal.com.br/"> <!-- URL canônica do site para Twitter, garantindo que os links mostrem a versão correta do site. -->
+    <meta name="twitter:title" content="Compleal - Ofertas de Informática"> <!--Título do Site no Compartilhamento-->
+    <meta name="twitter:description" content="As melhores ofertas e reviews de tecnologia."><!--Descrição do Site no Compartilhamento-->
+    <meta name="twitter:image" content="https://compleal.com.br/logo/web_image/android-chrome-512x512.png"> <!-- Define o tipo de cartão para Twitter, indicando que deve usar uma imagem.-->
+
+    <!-- Link para a fonte personalizada "League Spartan" do Google Fonts, melhorando a estética e a identidade visual do site.-->
+    <link rel="preconnect" href="https://fonts.googleapis.com"> <!-- Estabelece uma conexão antecipada com o domínio do Google Fonts, melhorando o desempenho ao carregar a fonte.-->
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin> <!-- Estabelece uma conexão antecipada com o domínio de hospedagem das fontes, melhorando o desempenho ao carregar a fonte.-->
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com"> <!-- Realiza uma busca antecipada de DNS para o domínio do Google Fonts, melhorando o desempenho ao carregar a fonte.-->
+    <link rel="preload" href="https://fonts.gstatic.com/s/leaguespartan/v11/S6uyw4BMUTPHmj4umC_dR_fXWc6xJ10.woff2" as="font" type="font/woff2" crossorigin> <!-- Preload da fonte "League Spartan" para melhorar o desempenho ao carregar a fonte.-->
+    <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@700&display=swap" rel="stylesheet"> <!-- Link para a fonte personalizada "League Spartan" do Google Fonts, melhorando a estética e a identidade visual do site.-->
+        
+    <!-- Link para os arquivos CSS, separando estilos globais e específicos para melhor organização e manutenção do código.-->
     <link rel="stylesheet" href="../style_global.css">
     <link rel="stylesheet" href="style_vendidos.css">
-    <link rel="icon" type="image/x-icon" href="../logo/favicon.ico">
-    
-    <link rel="apple-touch-icon" sizes="180x180" href="../logo/web_image/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="../logo/web_image/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="../logo/web_image/favicon-16x16.png">
-
-    <link rel="manifest" href="../logo/web_image/site.webmanifest">
-
-    <meta name="theme-color" content="#0d0b26">
 </head>
 
 <body>
     <div id="header-placeholder"></div>
 
-<div id="footer-placeholder"></div>
-<script src="../js/main.js"></script>
+    <main></main>
+
+    <div id="footer-placeholder"></div>
+    <script src="../js/main.js"></script>
 </body>
 
 </html>

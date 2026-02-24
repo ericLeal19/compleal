@@ -4,6 +4,7 @@ body {
     margin: 0; /* Zero não precisa de "px" */
     font-family: Arial, Helvetica, sans-serif;
     background-color: #f4f2ff;
+    flex: 1;
 }
 
 html, body {
@@ -11,7 +12,7 @@ html, body {
 }
 
 /* O placeholder do cabeçalho e o main ocupam o espaço disponível */
-main.product-grid {
+main {
     flex: 1;
 }
 

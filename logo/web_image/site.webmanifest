@@ -1,14 +1,15 @@
 {"name":"CompLeal - Site de Ofertas de Informática",
 "short_name":"CompLeal",
 "icons":[
-    {"src":"/android-chrome-192x192.png",
+    {"src":"/logo/web_image/android-chrome-192x192.png",
     "sizes":"192x192",
     "type":"image/png"},
-    {"src":"/android-chrome-512x512.png",
+    {"src":"/logo/web_image/android-chrome-512x512.png",
     "sizes":"512x512",
     "type":"image/png"}
     
 ],
 "theme_color":"#0d0b26",
 "background_color":"#f4f2ff",
-"display":"standalone"}
+"display":"standalone",
+"start_url": "/"}
