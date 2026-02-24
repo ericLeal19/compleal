@@ -1,0 +1,190 @@
+body { /* Estilos para o corpo da página */
+    margin: 0px;
+    font-family: Arial, Helvetica, sans-serif;
+    background-color: #f4f2ff;
+}
+
+.nav-top { /* Estilos para a parte superior da barra de navegação */
+    display: flex;/* Usa flexbox para layout */
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap; /* Permite quebrar linha em telas menores */
+    padding: 15px 5%; /* % ajuda na responsividade lateral */
+    background-color: #0d0b26;
+    gap: 20px;
+    height: auto; /* Remove altura fixa para adaptar ao conteúdo */
+    width: auto; /* Permite que a barra de navegação se ajuste à largura do conteúdo */
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    display: block; /* Garante que toda a área seja clicável */
+}
+
+.logo{ /* Estilos para o logo */
+    width: 85px; 
+    height: auto;   
+}
+
+.nav-marca {
+    transform: none; 
+    margin: 0;
+    /* Mantém o estilo da fonte */
+    color: white;
+    font-size: 32px; /* Ajuste leve para caber melhor */
+    font-weight: bold;
+    font-family: 'League Spartan', sans-serif;
+}
+
+.nav-tools { /* Estilos para as ferramentas do usuário */
+    display: flex;
+    flex: 2; /* Isso faz com que ela dispute espaço igual com o logo/busca */
+    gap: 10px;
+    align-items: center; /* Alinha verticalmente os itens no centro */
+    list-style: none; /* Remove marcadores de lista */
+    justify-content: center; /* Garante a centralização interna */
+    margin: 0;
+    padding: 0;
+    font-size: 14px;
+
+    text-align: center; /* Centraliza o texto dentro de cada item */
+    text-size-adjust: 100%; /* Garante que o texto seja redimensionado corretamente em dispositivos móveis */
+    cursor: pointer; /* Indica que são clicáveis */
+     color: white;
+}
+
+.nav-item { /* Estilos para cada item de ferramenta */
+    padding: 10px 15px;
+    line-height: 1.4; /* Aumenta o espaço entre a linha de cima e a de baixo */
+    border-radius: 6px;
+    text-align: center; /* Alinha o texto ao centro para facilitar a leitura */
+}
+
+.nav-item:hover { /* Estilos para o efeito hover nos links da parte inferior da barra de navegação */
+    background-color: #3b4a52;
+    border-radius: 12px;
+    transition: 0.2s; /* Dica extra: suaviza a mudança de cor */
+}
+
+.nav-logo, .nav-tools {
+    position: relative;
+    z-index: 2; /* Mantém logo e ferramentas acima de qualquer fundo */
+}
+
+.nav-search-container {
+    /* O CRÍTICO: Removemos absolute para ele fluir com os outros itens */
+    position: static; 
+    transform: none;
+    
+    flex-grow: 1; /* Ocupa o espaço sobrando no meio */
+    margin: 0 20px; /* Espaço entre logo e ferramentas */
+    max-width: 600px;
+    display: flex; /* Garante que o input e botão fiquem alinhados */
+}
+
+/* Barra de Pesquisa */
+.nav-search { /* Estilos para a barra de pesquisa */
+    display: flex;
+    flex-grow: 1; /* Faz a barra de pesquisa ocupar o espaço restante */
+    max-width: 600px; /* Limita a largura máxima da barra de pesquisa */
+    margin: 5px; /* Espaçamento horizontal */
+    width: 100%; /* Ocupa todo o container de 600px */
+}
+
+.nav-search input[type="text"] { /* Estilos para o campo de texto da barra de pesquisa */
+    flex-grow: 1; /* Faz o campo de texto ocupar o espaço restante */
+    padding: 8px;
+    border: none;
+    border-radius: 4px 0 0 4px; /* Arredonda os cantos do lado esquerdo */
+}
+
+.nav-search button[type="submit"] { /* Estilos para o botão de busca */
+    padding: 8px 12px;
+    background-color: #ff9113; /* Cor laranja para o botão de busca */
+    color: #0d0b26;/* Cor do texto no botão de busca */
+    border: none;
+    border-radius: 0 4px 4px 0; /* Arredonda os cantos do lado direito */
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Barra de Filtros */
+.nav-bottom-filters { /* Estilos para a parte inferior da barra de navegação */
+    background-color: #4e6c76;
+    padding: 5px 20px;
+}
+
+/* Botões dos Filtros */
+.nav-bottom-filters ul { /* Estilos para a lista de links na parte inferior da barra de navegação */
+    display: flex;
+    justify-content: center; /* Centraliza os itens horizontalmente */
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap; /* Permite que os itens quebrem linha em telas menores */
+}
+
+/* Texto dos Botões dos Filtros */
+.nav-bottom-filters a { /* Estilos para os links na parte inferior da barra de navegação */
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+    padding: 8px;
+    display: block;
+}
+
+.nav-bottom-filters a:hover { /* Estilos para o efeito hover nos links da parte inferior da barra de navegação */
+    background-color: #3b4a52;
+    border-radius: 4px;
+    transition: 0.2s; /* Dica extra: suaviza a mudança de cor */
+}
+
+.sobre-container {
+    max-width: 800px; /* Limita a largura para a leitura ficar agradável */
+    margin: 40px auto; /* '40px' em cima/baixo e 'auto' centraliza o bloco na esquerda/direita */
+    padding: 0 20px; /* Garante um espaço extra nas laterais em telas de celular */
+    text-align: center; /* Centraliza as letras do texto */
+}
+
+/* Oportunidade de melhoria para a leitura: */
+.sobre-container p {
+    line-height: 1.6; /* Aumenta o espaço entre as linhas */
+    margin-bottom: 20px; /* Espaço entre os parágrafos */
+}
+
+@media (max-width: 768px) {
+    .nav-top {
+        flex-direction: column; /* Empilha logo, busca e ferramentas */
+        padding: 20px;
+        gap: 15px;
+    }
+
+    .nav-search-container {
+        width: 100%; /* Busca ocupa largura total no mobile */
+        margin: 0;
+        order: 2; /* Coloca a busca abaixo da logo */
+    }
+
+    .nav-tools {
+        width: 100%;
+        justify-content: center; /* Distribui os ícones igualmente */
+        order: 3;
+    }
+    
+    .nav-bottom-filters ul {
+        flex-wrap: wrap; /* Permite que o menu inferior quebre linha */
+        justify-content: center;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(2, 1fr); /* 2 colunas no tablet */
+    }
+}
+
+@media (max-width: 480px) {
+    .product-grid {
+        grid-template-columns: 1fr; /* 1 coluna no celular */
+    }
+}
