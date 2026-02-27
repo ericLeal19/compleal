@@ -9,7 +9,7 @@
 const ML_AFFILIATE_ID = 'compleal';
 
 const BUSCA_PADRAO    = 'notebook gamer';
-const LIMITE_PRODUTOS = 9;
+const LIMITE_PRODUTOS = 3;
 
 function gerarLinkAfiliado(permalink) {
   return `${permalink}?utm_source=${ML_AFFILIATE_ID}&utm_medium=referral&utm_campaign=compleal`;

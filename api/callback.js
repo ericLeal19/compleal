@@ -1,6 +1,6 @@
 // ============================================================
 //  /api/callback.js — Recebe o code do ML e troca pelos tokens
-//  Salva os tokens nas variáveis de ambiente automaticamente
+//  Após receber os tokens, acesse /api/setup-tokens para salvá-los no Redis
 // ============================================================
 
 export default async function handler(req, res) {
@@ -10,7 +10,6 @@ export default async function handler(req, res) {
     return res.status(400).send('Código de autorização ausente.');
   }
 
-  // Recupera o code_verifier salvo no cookie
   const cookies = Object.fromEntries(
     (req.headers.cookie || '').split('; ').map(c => c.split('='))
   );
@@ -29,11 +28,11 @@ export default async function handler(req, res) {
       headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({
         grant_type:    'authorization_code',
-        client_id:     process.env.ML_CLIENT_ID,
+        client_id:     process.env.ML_APP_ID,
         client_secret: process.env.ML_CLIENT_SECRET,
         code:          code,
         redirect_uri:  process.env.ML_REDIRECT_URI,
-        code_verifier: codeVerifier, // PKCE
+        code_verifier: codeVerifier,
       })
     });
 
@@ -49,35 +48,30 @@ export default async function handler(req, res) {
     // Limpa o cookie
     res.setHeader('Set-Cookie', 'cv=; HttpOnly; Secure; Path=/; Max-Age=0');
 
-    // Mostra os tokens para o usuário salvar na Vercel
     return res.status(200).send(`
       <html>
       <body style="font-family:monospace;padding:40px;background:#0d0b26;color:white">
         <h2 style="color:#FF9900">✅ Tokens gerados com sucesso!</h2>
-        <p>Salve esses valores nas variáveis de ambiente da Vercel:</p>
+        <p>Cole esses valores nas variáveis de ambiente da Vercel e depois acesse <a href="/api/setup-tokens" style="color:#FF9900">/api/setup-tokens</a>.</p>
         <hr style="border-color:#4e6c76">
-        
+
         <p><strong style="color:#FF9900">ML_ACCESS_TOKEN</strong></p>
-        <input style="width:100%;padding:8px;background:#1a1840;color:white;border:1px solid #4e6c76;border-radius:4px" 
+        <input style="width:100%;padding:8px;background:#1a1840;color:white;border:1px solid #4e6c76;border-radius:4px"
                value="${dados.access_token}" readonly onclick="this.select()">
-        
+
         <p style="margin-top:20px"><strong style="color:#FF9900">ML_TG (Refresh Token)</strong></p>
-        <input style="width:100%;padding:8px;background:#1a1840;color:white;border:1px solid #4e6c76;border-radius:4px" 
+        <input style="width:100%;padding:8px;background:#1a1840;color:white;border:1px solid #4e6c76;border-radius:4px"
                value="${dados.refresh_token}" readonly onclick="this.select()">
 
         <p style="margin-top:30px;color:#4e6c76">
-          Expira em: ${dados.expires_in / 3600}h | 
-          User ID: ${dados.user_id}
+          Expira em: ${dados.expires_in / 3600}h | User ID: ${dados.user_id}
         </p>
 
         <p style="margin-top:20px">
-          Agora rode no terminal:<br>
+          Próximo passo:<br>
           <code style="color:#FF9900">
-            vercel env rm ML_ACCESS_TOKEN production<br>
-            vercel env add ML_ACCESS_TOKEN<br>
-            vercel env rm ML_TG production<br>
-            vercel env add ML_TG<br>
-            vercel env pull .env.local
+            1. Salve ML_ACCESS_TOKEN e ML_TG nas variáveis de ambiente da Vercel<br>
+            2. Acesse https://compleal.com.br/api/setup-tokens
           </code>
         </p>
       </body>

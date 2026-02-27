@@ -24,7 +24,7 @@ export default function handler(req, res) {
   // Redireciona para o ML com PKCE
   const authUrl = new URL('https://auth.mercadolivre.com.br/authorization');
   authUrl.searchParams.set('response_type', 'code');
-  authUrl.searchParams.set('client_id', process.env.ML_CLIENT_ID);
+  authUrl.searchParams.set('client_id', process.env.ML_APP_ID);
   authUrl.searchParams.set('redirect_uri', process.env.ML_REDIRECT_URI);
   authUrl.searchParams.set('code_challenge', codeChallenge);
   authUrl.searchParams.set('code_challenge_method', 'S256');
