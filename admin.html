@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
+<!-- Favicon e ícones para diferentes dispositivos, melhorando a experiência do usuário e a identidade visual do site.--> 
+    <link rel="apple-touch-icon" sizes="180x180" href="logo/web_image/apple-touch-icon.png"> <!-- Ícone para dispositivos Apple--> 
+    <link rel="icon" type="image/png" sizes="32x32" href="logo/web_image/favicon-32x32.png"> <!-- Favicon para navegadores modernos -->
+    <link rel="icon" type="image/png" sizes="512x512" href="logo/web_image/android-chrome-512x512.png"> <!-- Ícone para dispositivos Android -->
+    <link rel="icon" type="image/png" sizes="16x16" href="logo/web_image/favicon-16x16.png"> <!-- Favicon para navegadores mais antigos -->
+    <link rel="shortcut icon" href="logo/favicon.ico" type="image/x-icon"> <!-- Favicon para navegadores que suportam apenas .ico -->
+    <link rel="manifest" href="logo/web_image/site.webmanifest"> <!-- Manifesto para PWA, permitindo que o site seja instalado como um aplicativo -->
+ 
+    <title>Admin — Compleal</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f4f6f8;
+      color: #1a1a2e;
+      min-height: 100vh;
+    }
+
+    /* ---- Login ---- */
+    #tela-login {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+    }
+
+    .login-box {
+      background: #fff;
+      padding: 2.5rem 2rem;
+      border-radius: 12px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.08);
+      width: 100%;
+      max-width: 360px;
+      text-align: center;
+    }
+
+    .login-box h1 { font-size: 1.4rem; margin-bottom: 1.5rem; }
+    .login-box input {
+      width: 100%; padding: .75rem 1rem;
+      border: 1px solid #ddd; border-radius: 8px;
+      font-size: 1rem; margin-bottom: 1rem;
+    }
+    .login-box button {
+      width: 100%; padding: .75rem;
+      background: #FFE600; border: none;
+      border-radius: 8px; font-size: 1rem;
+      font-weight: 600; cursor: pointer;
+    }
+    .login-box button:hover { background: #e6cf00; }
+    #erro-login { color: #e53935; font-size: .875rem; margin-top: .5rem; display: none; }
+
+    /* ---- Painel ---- */
+    #painel { display: none; }
+
+    header {
+      background: #FFE600; padding: 1rem 2rem;
+      display: flex; align-items: center;
+      justify-content: space-between;
+      box-shadow: 0 2px 8px rgba(0,0,0,.08);
+    }
+    header h1 { font-size: 1.2rem; }
+    header button {
+      background: #1a1a2e; color: #fff;
+      border: none; padding: .5rem 1rem;
+      border-radius: 8px; cursor: pointer; font-size: .875rem;
+    }
+
+    main { max-width: 900px; margin: 2rem auto; padding: 0 1rem; }
+
+    /* ---- Card de formulário ---- */
+    .card-form {
+      background: #fff; border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,.06);
+      margin-bottom: 2rem;
+    }
+    .card-form h2 { font-size: 1.1rem; margin-bottom: 1rem; }
+
+    .campo { margin-bottom: .85rem; }
+    .campo label {
+      display: block; font-size: .8rem;
+      font-weight: 600; color: #555;
+      margin-bottom: .3rem; text-transform: uppercase;
+      letter-spacing: .4px;
+    }
+    .campo input, .campo select {
+      width: 100%; padding: .65rem .9rem;
+      border: 1px solid #ddd; border-radius: 8px;
+      font-size: .95rem; background: #fff;
+    }
+    .campo input:focus, .campo select:focus {
+      outline: none; border-color: #FFE600;
+      box-shadow: 0 0 0 3px rgba(255,230,0,.25);
+    }
+
+    .campos-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: .75rem;
+    }
+
+    .campo-destaque input {
+      font-size: 1rem; font-weight: 600;
+    }
+
+    .btn-add {
+      width: 100%; padding: .8rem;
+      background: #FFE600; border: none;
+      border-radius: 8px; font-size: 1rem;
+      font-weight: 700; cursor: pointer;
+      margin-top: .5rem;
+    }
+    .btn-add:hover { background: #e6cf00; }
+    .btn-add:disabled { opacity: .5; cursor: not-allowed; }
+
+    #msg-adicao {
+      margin-top: .75rem; font-size: .875rem;
+      padding: .5rem .75rem; border-radius: 6px; display: none;
+    }
+    #msg-adicao.sucesso { background: #e8f5e9; color: #2e7d32; }
+    #msg-adicao.erro    { background: #ffebee; color: #c62828; }
+
+    /* ---- Lista ---- */
+    .card-lista h2 { font-size: 1.1rem; margin-bottom: 1rem; }
+    #lista-produtos { display: flex; flex-direction: column; gap: .75rem; }
+
+    .produto-item {
+      background: #fff; border-radius: 10px;
+      padding: 1rem;
+      box-shadow: 0 1px 6px rgba(0,0,0,.06);
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .produto-item img {
+      width: 64px; height: 64px;
+      object-fit: contain; border-radius: 6px;
+      background: #f4f6f8; flex-shrink: 0;
+    }
+    .produto-info { flex: 1; min-width: 0; }
+    .produto-info .titulo {
+      font-weight: 600; font-size: .95rem;
+      white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .produto-info .meta { font-size: .8rem; color: #666; margin-top: .3rem; }
+    .produto-info .meta span { margin-right: .75rem; }
+    .produto-acoes { display: flex; gap: .5rem; flex-shrink: 0; }
+
+    .btn-editar {
+      background: #fff8e1; color: #b8860b;
+      border: none; padding: .4rem .9rem;
+      border-radius: 6px; cursor: pointer;
+      font-size: .8rem; font-weight: 600;
+    }
+    .btn-editar:hover { background: #fff3cd; }
+    .btn-remover {
+      background: #ffebee; color: #c62828;
+      border: none; padding: .4rem .9rem;
+      border-radius: 6px; cursor: pointer;
+      font-size: .8rem; font-weight: 600;
+    }
+    .btn-remover:hover { background: #ffcdd2; }
+
+    .empty-state { text-align: center; color: #999; padding: 2rem; font-size: .95rem; }
+    .loading-state { text-align: center; color: #999; padding: 1.5rem; font-size: .875rem; }
+
+    /* ---- Modal de edição ---- */
+    #modal-overlay {
+      display: none; position: fixed;
+      inset: 0; background: rgba(0,0,0,.45);
+      z-index: 100; align-items: center; justify-content: center;
+    }
+    #modal-overlay.aberto { display: flex; }
+    #modal {
+      background: #fff; border-radius: 12px;
+      padding: 1.75rem; width: 100%;
+      max-width: 520px; max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 8px 40px rgba(0,0,0,.18);
+    }
+    #modal h2 { font-size: 1.1rem; margin-bottom: 1.25rem; }
+    .modal-acoes { display: flex; gap: .75rem; margin-top: 1rem; }
+    .btn-salvar {
+      flex: 1; padding: .75rem;
+      background: #FFE600; border: none;
+      border-radius: 8px; font-weight: 700;
+      font-size: .95rem; cursor: pointer;
+    }
+    .btn-salvar:hover { background: #e6cf00; }
+    .btn-cancelar {
+      flex: 1; padding: .75rem;
+      background: #f4f6f8; border: none;
+      border-radius: 8px; font-weight: 600;
+      font-size: .95rem; cursor: pointer; color: #555;
+    }
+    .btn-cancelar:hover { background: #e8eaed; }
+
+    #msg-modal {
+      margin-top: .75rem; font-size: .875rem;
+      padding: .5rem .75rem; border-radius: 6px; display: none;
+    }
+    #msg-modal.sucesso { background: #e8f5e9; color: #2e7d32; }
+    #msg-modal.erro    { background: #ffebee; color: #c62828; }
+
+    .hint {
+      font-size: .75rem; color: #999;
+      margin-top: .25rem; font-style: italic;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ===== Login ===== -->
+<div id="tela-login">
+  <div class="login-box">
+    <h1>Admin — Compleal</h1>
+    <input type="password" id="input-senha" placeholder="Senha de administrador" />
+    <button onclick="fazerLogin()">Entrar</button>
+    <p id="erro-login">Senha incorreta.</p>
+  </div>
+</div>
+
+<!-- ===== Painel ===== -->
+<div id="painel">
+  <header>
+    <h1>⚙️ Painel de Produtos</h1>
+    <button onclick="sair()">Sair</button>
+  </header>
+
+  <main>
+
+    <!-- Adicionar produto -->
+    <div class="card-form">
+      <h2>Adicionar produto</h2>
+
+      <div class="campo campo-destaque">
+        <label>URL da página real do produto *</label>
+        <input type="url" id="input-page-url" placeholder="https://www.mercadolivre.com.br/produto/MLB…" />
+        <p class="hint">Usada para extrair título e imagem automaticamente.</p>
+      </div>
+
+      <div class="campo campo-destaque">
+        <label>Link de afiliado *</label>
+        <input type="url" id="input-link" placeholder="https://www.mercadolivre.com.br/social/…" />
+        <p class="hint">Destino do clique no site. Pode ser editado depois.</p>
+      </div>
+
+      <div class="campos-grid">
+        <div class="campo">
+          <label>Preço (R$)</label>
+          <input type="number" id="input-price" placeholder="499.90" step="0.01" min="0" />
+        </div>
+        <div class="campo">
+          <label>Nota (0–5)</label>
+          <input type="number" id="input-rating" placeholder="4.7" step="0.1" min="0" max="5" />
+        </div>
+        <div class="campo">
+          <label>Nº de avaliações</label>
+          <input type="number" id="input-count" placeholder="328" min="0" />
+        </div>
+        <div class="campo">
+          <label>Vendidos</label>
+          <input type="number" id="input-sold" placeholder="1200" min="0" />
+        </div>
+        <div class="campo">
+          <label>Condição</label>
+          <select id="input-condition">
+            <option value="">— selecione —</option>
+            <option value="new">Novo</option>
+            <option value="used">Usado</option>
+          </select>
+        </div>
+      </div>
+
+      <button class="btn-add" id="btn-adicionar" onclick="adicionarProduto()">
+        Adicionar produto
+      </button>
+      <div id="msg-adicao"></div>
+    </div>
+
+    <!-- Lista -->
+    <div class="card-lista">
+      <h2>Produtos cadastrados</h2>
+      <div id="lista-produtos">
+        <div class="loading-state">Carregando…</div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- ===== Modal de edição ===== -->
+<div id="modal-overlay">
+  <div id="modal">
+    <h2>✏️ Editar produto</h2>
+    <input type="hidden" id="edit-id" />
+
+    <div class="campo">
+      <label>Título</label>
+      <input type="text" id="edit-title" />
+    </div>
+    <div class="campo">
+      <label>URL da imagem</label>
+      <input type="url" id="edit-thumbnail" />
+    </div>
+    <div class="campos-grid">
+      <div class="campo">
+        <label>Preço (R$)</label>
+        <input type="number" id="edit-price" step="0.01" min="0" />
+      </div>
+      <div class="campo">
+        <label>Nota (0–5)</label>
+        <input type="number" id="edit-rating" step="0.1" min="0" max="5" />
+      </div>
+      <div class="campo">
+        <label>Nº de avaliações</label>
+        <input type="number" id="edit-count" min="0" />
+      </div>
+      <div class="campo">
+        <label>Vendidos</label>
+        <input type="number" id="edit-sold" min="0" />
+      </div>
+      <div class="campo">
+        <label>Condição</label>
+        <select id="edit-condition">
+          <option value="">— selecione —</option>
+          <option value="new">Novo</option>
+          <option value="used">Usado</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="msg-modal"></div>
+
+    <div class="modal-acoes">
+      <button class="btn-cancelar" onclick="fecharModal()">Cancelar</button>
+      <button class="btn-salvar" onclick="salvarEdicao()">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  let SENHA = '';
+
+  // ---- Login ----
+  document.getElementById('input-senha').addEventListener('keydown', e => {
+    if (e.key === 'Enter') fazerLogin();
+  });
+
+  async function fazerLogin() {
+    const senha = document.getElementById('input-senha').value.trim();
+    if (!senha) return;
+
+    const resp = await fetch('/api/admin', {
+      headers: { 'x-admin-password': senha }
+    });
+
+    if (resp.status === 401) {
+      document.getElementById('erro-login').style.display = 'block';
+      return;
+    }
+
+    SENHA = senha;
+    document.getElementById('tela-login').style.display = 'none';
+    document.getElementById('painel').style.display     = 'block';
+    document.getElementById('erro-login').style.display = 'none';
+
+    renderizarLista(await resp.json());
+  }
+
+  function sair() {
+    SENHA = '';
+    document.getElementById('painel').style.display     = 'none';
+    document.getElementById('tela-login').style.display = 'flex';
+    document.getElementById('input-senha').value        = '';
+  }
+
+  // ---- Adicionar ----
+  async function adicionarProduto() {
+    const page_url  = document.getElementById('input-page-url').value.trim();
+    const link      = document.getElementById('input-link').value.trim();
+    const price     = document.getElementById('input-price').value.trim();
+    const rating    = document.getElementById('input-rating').value.trim();
+    const count     = document.getElementById('input-count').value.trim();
+    const sold      = document.getElementById('input-sold').value.trim();
+    const condition = document.getElementById('input-condition').value;
+    const btn       = document.getElementById('btn-adicionar');
+
+    if (!page_url) { mostrarMsg('msg-adicao', 'Informe a URL da página do produto.', 'erro'); return; }
+    if (!link)     { mostrarMsg('msg-adicao', 'Informe o link de afiliado.', 'erro'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Adicionando…';
+
+    try {
+      const resp = await fetch('/api/admin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': SENHA },
+        body: JSON.stringify({
+          page_url,
+          affiliate_link: link,
+          price:          price   || undefined,
+          reviews_rating: rating  || undefined,
+          reviews_count:  count   || undefined,
+          sold:           sold    || undefined,
+          condition:      condition || undefined,
+        }),
+      });
+
+      const dados = await resp.json();
+      if (!resp.ok) { mostrarMsg('msg-adicao', dados.erro || 'Erro ao adicionar.', 'erro'); return; }
+
+      mostrarMsg('msg-adicao', `✅ "${dados.produto.title}" adicionado!`, 'sucesso');
+
+      ['input-page-url','input-link','input-price','input-rating','input-count','input-sold'].forEach(id => {
+        document.getElementById(id).value = '';
+      });
+      document.getElementById('input-condition').value = '';
+
+      await recarregarLista();
+    } catch {
+      mostrarMsg('msg-adicao', 'Erro de conexão.', 'erro');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Adicionar produto';
+    }
+  }
+
+  // ---- Editar ----
+  function abrirModal(p) {
+    document.getElementById('edit-id').value        = p.id;
+    document.getElementById('edit-title').value     = p.title || '';
+    document.getElementById('edit-thumbnail').value = p.thumbnail || '';
+    document.getElementById('edit-price').value     = p.price ?? '';
+    document.getElementById('edit-rating').value    = p.reviews?.rating ?? '';
+    document.getElementById('edit-count').value     = p.reviews?.count  ?? '';
+    document.getElementById('edit-sold').value      = p.sold ?? '';
+    document.getElementById('edit-condition').value = p.condition || '';
+    document.getElementById('msg-modal').style.display = 'none';
+    document.getElementById('modal-overlay').classList.add('aberto');
+  }
+
+  function fecharModal() {
+    document.getElementById('modal-overlay').classList.remove('aberto');
+  }
+
+  // Fecha modal clicando fora
+  document.getElementById('modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) fecharModal();
+  });
+
+  async function salvarEdicao() {
+    const id        = document.getElementById('edit-id').value;
+    const title     = document.getElementById('edit-title').value.trim();
+    const thumbnail = document.getElementById('edit-thumbnail').value.trim();
+    const price     = document.getElementById('edit-price').value.trim();
+    const rating    = document.getElementById('edit-rating').value.trim();
+    const count     = document.getElementById('edit-count').value.trim();
+    const sold      = document.getElementById('edit-sold').value.trim();
+    const condition = document.getElementById('edit-condition').value;
+
+    try {
+      const resp = await fetch(`/api/admin?id=${encodeURIComponent(id)}`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json', 'x-admin-password': SENHA },
+        body: JSON.stringify({
+          title:          title     || undefined,
+          thumbnail:      thumbnail || undefined,
+          price:          price     || undefined,
+          reviews_rating: rating    || undefined,
+          reviews_count:  count     || undefined,
+          sold:           sold      || undefined,
+          condition:      condition || undefined,
+        }),
+      });
+
+      const dados = await resp.json();
+      if (!resp.ok) { mostrarMsg('msg-modal', dados.erro || 'Erro ao salvar.', 'erro'); return; }
+
+      mostrarMsg('msg-modal', '✅ Produto atualizado!', 'sucesso');
+      setTimeout(() => { fecharModal(); recarregarLista(); }, 1000);
+    } catch {
+      mostrarMsg('msg-modal', 'Erro de conexão.', 'erro');
+    }
+  }
+
+  // ---- Remover ----
+  async function removerProduto(id, titulo) {
+    if (!confirm(`Remover "${titulo}"?`)) return;
+
+    const resp = await fetch(`/api/admin?id=${encodeURIComponent(id)}`, {
+      method: 'DELETE',
+      headers: { 'x-admin-password': SENHA },
+    });
+
+    if (resp.ok) await recarregarLista();
+    else alert('Erro ao remover produto.');
+  }
+
+  // ---- Lista ----
+  async function recarregarLista() {
+    const resp  = await fetch('/api/admin', { headers: { 'x-admin-password': SENHA } });
+    renderizarLista(await resp.json());
+  }
+
+  function renderizarLista(produtos) {
+    const container = document.getElementById('lista-produtos');
+
+    if (!produtos || produtos.length === 0) {
+      container.innerHTML = '<div class="empty-state">Nenhum produto cadastrado ainda.</div>';
+      return;
+    }
+
+    container.innerHTML = produtos.map(p => {
+      const preco  = p.price
+        ? p.price.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' })
+        : '—';
+      const cond   = p.condition === 'new' ? 'Novo' : p.condition === 'used' ? 'Usado' : '—';
+      const nota   = p.reviews?.rating ? `⭐ ${p.reviews.rating}` : '—';
+      const vendas = p.sold ? `+${p.sold} vendidos` : '—';
+
+      return `
+        <div class="produto-item">
+          <img src="${p.thumbnail || ''}" alt="${p.title}" onerror="this.style.display='none'" />
+          <div class="produto-info">
+            <div class="titulo">${p.title}</div>
+            <div class="meta">
+              <span title="Preço">${preco}</span>
+              <span title="Condição">${cond}</span>
+              <span title="Avaliação">${nota}</span>
+              <span title="Vendas">${vendas}</span>
+            </div>
+          </div>
+          <div class="produto-acoes">
+            <button class="btn-editar" onclick='abrirModal(${JSON.stringify(p)})'>Editar</button>
+            <button class="btn-remover" onclick="removerProduto('${p.id}', '${p.title.replace(/'/g, "\\'")}')">Remover</button>
+          </div>
+        </div>
+      `;
+    }).join('');
+  }
+
+  // ---- Helpers ----
+  function mostrarMsg(id, texto, tipo) {
+    const el = document.getElementById(id);
+    el.textContent   = texto;
+    el.className     = tipo;
+    el.style.display = 'block';
+    setTimeout(() => { el.style.display = 'none'; }, 5000);
+  }
+</script>
+</body>
+</html>

@@ -1,85 +1,119 @@
 // ============================================================
 //  js/busca.js — Script FRONTEND
-//  Chama /api/produtos (Vercel Function) como proxy para o ML
-//  O servidor faz a chamada ao ML, evitando o erro 403
+//  Exibe os produtos cadastrados manualmente pelo admin.
+//  ⚠️ Este arquivo roda no NAVEGADOR — não use import/require.
 // ============================================================
 
-// ⚠️ Substitua pelo seu ID real do Programa de Afiliados do ML
-// Cadastre-se em: https://www.mercadolibre.com.br/afiliados
-const ML_AFFILIATE_ID = 'compleal';
+const BUSCA_PADRAO = 'notebook';
 
-const BUSCA_PADRAO    = 'notebook gamer';
-const LIMITE_PRODUTOS = 3;
-
-function gerarLinkAfiliado(permalink) {
-  return `${permalink}?utm_source=${ML_AFFILIATE_ID}&utm_medium=referral&utm_campaign=compleal`;
-}
-
-function renderizarEstrelas(nota) {
-  if (!nota) return '';
-  const cheias = Math.round(nota);
-  return '★'.repeat(cheias) + '☆'.repeat(5 - cheias);
-}
+// ----- Helpers -------------------------------------------------------
 
 function formatarPreco(preco) {
   return preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
 }
 
-function renderizarProdutos(produtos) {
+function formatarCondicao(condition) {
+  if (condition === 'new')  return 'Novo';
+  if (condition === 'used') return 'Usado';
+  return '';
+}
+
+function renderizarEstrelas(rating) {
+  if (!rating) return '';
+  const cheias  = Math.floor(rating);
+  const meia    = rating - cheias >= 0.5 ? 1 : 0;
+  const vazias  = 5 - cheias - meia;
+  return '★'.repeat(cheias) + (meia ? '½' : '') + '☆'.repeat(vazias);
+}
+
+function formatarVendidos(sold) {
+  if (!sold) return null;
+  if (sold >= 1000) return `+${(sold / 1000).toFixed(1).replace('.', ',')}mil vendidos`;
+  return `+${sold} vendidos`;
+}
+
+// ----- Renderização --------------------------------------------------
+
+function renderizarProdutos(produtos, termo = '') {
   const container = document.getElementById('produtos-ml');
   if (!container) return;
 
-  if (!produtos || produtos.length === 0) {
+  const filtrados = termo
+    ? produtos.filter(p => p.title.toLowerCase().includes(termo.toLowerCase()))
+    : produtos;
+
+  if (!filtrados || filtrados.length === 0) {
     container.innerHTML = '<p class="sem-produtos">Nenhum produto encontrado.</p>';
     return;
   }
 
-  container.innerHTML = produtos.map(produto => {
+  container.innerHTML = filtrados.map(produto => {
+    const imgSrc   = produto.thumbnail || '';
+    const link     = produto.affiliate_link || '#';
     const preco    = produto.price ? formatarPreco(produto.price) : 'Ver preço';
-    const estrelas = produto.reviews?.rating_average
-      ? renderizarEstrelas(produto.reviews.rating_average)
-      : '';
-    const link   = gerarLinkAfiliado(produto.permalink);
-    const imgSrc = produto.thumbnail.replace('http://', 'https://');
+    const condicao = formatarCondicao(produto.condition);
+
+    const avaliacaoHtml = produto.reviews?.rating ? `
+      <div class="product-reviews">
+        <span class="stars">${renderizarEstrelas(produto.reviews.rating)}</span>
+        <span class="rating-value">${produto.reviews.rating.toFixed(1)}</span>
+        ${produto.reviews.count ? `<span class="review-count">(${produto.reviews.count})</span>` : ''}
+      </div>` : '';
+
+    const vendidosHtml = produto.sold ? `
+      <span class="product-sold">${formatarVendidos(produto.sold)}</span>` : '';
 
     return `
       <div class="card">
-        <img class="product-img" src="${imgSrc}" alt="${produto.title}" loading="lazy">
-        <p class="product-title">${produto.title}</p>
-        ${estrelas ? `<div class="product-rating"><span class="estrelas">${estrelas}</span></div>` : ''}
-        <p class="product-price">${preco}</p>
-        <div class="button-group">
-          <a href="${link}" target="_blank" rel="noopener noreferrer sponsored" class="btn-buy">
-            Ver no ML
-          </a>
+        <a href="${link}" target="_blank" rel="noopener noreferrer">
+          <img
+            class="product-img"
+            src="${imgSrc}"
+            alt="${produto.title}"
+            loading="lazy"
+            onerror="this.style.display='none'"
+          />
+        </a>
+        <div class="card-body">
+          ${condicao ? `<span class="product-condition">${condicao}</span>` : ''}
+          <p class="product-title">${produto.title}</p>
+          ${avaliacaoHtml}
+          ${vendidosHtml}
+          <p class="product-price">${preco}</p>
+          <div class="button-group">
+            <a class="btn-ver-ml" href="${link}" target="_blank" rel="noopener noreferrer">
+              Ver no Mercado Livre
+            </a>
+          </div>
         </div>
       </div>
     `;
   }).join('');
 }
 
-// ✅ Chama /api/produtos (Vercel Function como proxy) — resolve o erro 403
-async function buscarProdutos(termo = BUSCA_PADRAO) {
+// ----- Busca ---------------------------------------------------------
+
+let todosOsProdutos = []; // cache local para filtro sem nova requisição
+
+async function carregarProdutos() {
   const container = document.getElementById('produtos-ml');
   if (!container) return;
 
-  container.innerHTML = '<div class="loading">Buscando produtos</div>';
-
-  const url = `/api/produtos?q=${encodeURIComponent(termo)}&limit=${LIMITE_PRODUTOS}`;
+  container.innerHTML = '<div class="loading">Carregando produtos…</div>';
 
   try {
-    const resposta = await fetch(url);
+    const resposta = await fetch('/api/produtos');
 
     if (!resposta.ok) {
       const erroJson = await resposta.json().catch(() => ({}));
       throw new Error(`Erro ${resposta.status}${erroJson.detalhe ? ': ' + erroJson.detalhe : ''}`);
     }
 
-    const produtos = await resposta.json();
-    renderizarProdutos(produtos);
+    todosOsProdutos = await resposta.json();
+    renderizarProdutos(todosOsProdutos);
 
   } catch (erro) {
-    console.error('Erro ao buscar produtos:', erro);
+    console.error('[Busca] Erro ao carregar produtos:', erro);
     container.innerHTML = `
       <div class="erro">
         Não foi possível carregar os produtos. Tente novamente mais tarde.<br>
@@ -88,6 +122,8 @@ async function buscarProdutos(termo = BUSCA_PADRAO) {
     `;
   }
 }
+
+// ----- Formulário de busca (filtra localmente) ----------------------
 
 function configurarBusca() {
   const intervalo = setInterval(() => {
@@ -98,16 +134,17 @@ function configurarBusca() {
     form.addEventListener('submit', function (e) {
       e.preventDefault();
       const input = form.querySelector('input[type="text"]');
-      const termo = input?.value?.trim();
-      if (termo) {
-        buscarProdutos(termo);
-        document.getElementById('container-produtos')?.scrollIntoView({ behavior: 'smooth' });
-      }
+      const termo = input?.value?.trim() || '';
+      renderizarProdutos(todosOsProdutos, termo);
+      document.getElementById('container-produtos')
+        ?.scrollIntoView({ behavior: 'smooth' });
     });
   }, 200);
 }
 
+// ----- Init ----------------------------------------------------------
+
 document.addEventListener('DOMContentLoaded', () => {
-  buscarProdutos(BUSCA_PADRAO);
+  carregarProdutos();
   configurarBusca();
 });
