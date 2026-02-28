@@ -17,6 +17,7 @@ function formatarCondicao(condition) {
 
 function renderizarEstrelas(rating) {
   if (!rating) return '';
+  if (rating >= 4.8) rating = 5; // Regra adicionada para arredondar avaliações muito próximas de 5
   const cheias = Math.floor(rating);
   const meia   = rating - cheias >= 0.5 ? 1 : 0;
   const vazias = 5 - cheias - meia;
