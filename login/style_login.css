@@ -1,0 +1,160 @@
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      background: #f4f2ff;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .auth-wrapper {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem 1rem;
+    }
+
+    .auth-box {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 4px 32px rgba(0,0,0,.10);
+      width: 100%;
+      max-width: 420px;
+      overflow: hidden;
+    }
+
+    /* Abas */
+    .tabs {
+      display: flex;
+      border-bottom: 2px solid #f0f0f0;
+    }
+
+    .tab {
+      flex: 1;
+      padding: 1rem;
+      text-align: center;
+      font-weight: 700;
+      font-size: .95rem;
+      cursor: pointer;
+      background: none;
+      border: none;
+      color: #999;
+      transition: color .2s;
+    }
+
+    .tab.ativo {
+      color: #0d0b26;
+      border-bottom: 3px solid #FFE600;
+      margin-bottom: -2px;
+    }
+
+    /* Painel do usuário logado */
+    #painel-usuario { display: none; padding: 2rem; }
+    #painel-usuario h2 { font-size: 1.2rem; margin-bottom: .5rem; }
+    #painel-usuario p  { color: #666; font-size: .9rem; margin-bottom: 1.5rem; }
+
+    /* Formulários */
+    .form-panel { padding: 1.75rem; display: none; }
+    .form-panel.ativo { display: block; }
+
+    .campo { margin-bottom: 1rem; }
+    .campo label {
+      display: block; font-size: .78rem; font-weight: 700;
+      text-transform: uppercase; letter-spacing: .4px;
+      color: #555; margin-bottom: .35rem;
+    }
+    .campo input {
+      width: 100%; padding: .7rem .9rem;
+      border: 1.5px solid #e0e0e0; border-radius: 8px;
+      font-size: .95rem; transition: border-color .2s;
+    }
+    .campo input:focus {
+      outline: none; border-color: #FFE600;
+      box-shadow: 0 0 0 3px rgba(255,230,0,.2);
+    }
+
+    .campos-2 { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+
+    /* Botões */
+    .btn-primary {
+      width: 100%; padding: .85rem;
+      background: #FFE600; border: none;
+      border-radius: 10px; font-size: 1rem;
+      font-weight: 700; cursor: pointer;
+      transition: background .2s; margin-top: .25rem;
+    }
+    .btn-primary:hover    { background: #e6cf00; }
+    .btn-primary:disabled { opacity: .5; cursor: not-allowed; }
+
+    .btn-google {
+      width: 100%; padding: .8rem;
+      background: #fff; border: 1.5px solid #e0e0e0;
+      border-radius: 10px; font-size: .95rem;
+      font-weight: 600; cursor: pointer;
+      display: flex; align-items: center;
+      justify-content: center; gap: .6rem;
+      transition: background .2s, border-color .2s;
+      margin-bottom: 1.25rem; color: #333;
+    }
+    .btn-google:hover { background: #f8f8f8; border-color: #bbb; }
+
+    .btn-google svg { width: 20px; height: 20px; flex-shrink: 0; }
+
+    .divider {
+      display: flex; align-items: center;
+      gap: .75rem; margin-bottom: 1.25rem;
+      color: #bbb; font-size: .8rem;
+    }
+    .divider::before, .divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: #e8e8e8;
+    }
+
+    .msg {
+      padding: .6rem .85rem; border-radius: 7px;
+      font-size: .85rem; margin-bottom: .85rem; display: none;
+    }
+    .msg.erro    { background: #ffebee; color: #c62828; }
+    .msg.sucesso { background: #e8f5e9; color: #2e7d32; }
+
+    .trocar-form {
+      text-align: center; margin-top: 1rem;
+      font-size: .875rem; color: #666;
+    }
+    .trocar-form a { color: #0d0b26; font-weight: 700; cursor: pointer; }
+
+    /* Perfil */
+    .perfil-info { margin-bottom: 1.5rem; }
+    .perfil-info .nome-usuario {
+      font-size: 1.3rem; font-weight: 700; margin-bottom: .15rem;
+    }
+    .perfil-info .email-usuario { color: #888; font-size: .875rem; }
+
+    .perfil-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; margin-bottom: 1rem; }
+    .perfil-item label {
+      font-size: .75rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .4px; color: #aaa; display: block; margin-bottom: .2rem;
+    }
+    .perfil-item input {
+      width: 100%; padding: .6rem .8rem;
+      border: 1.5px solid #e0e0e0; border-radius: 8px; font-size: .9rem;
+    }
+    .perfil-item input:focus {
+      outline: none; border-color: #FFE600;
+      box-shadow: 0 0 0 3px rgba(255,230,0,.15);
+    }
+
+    .btn-secundario {
+      padding: .7rem 1.5rem; background: #f4f2ff;
+      border: none; border-radius: 8px;
+      font-weight: 600; cursor: pointer; font-size: .9rem;
+    }
+    .btn-logout {
+      padding: .7rem 1.5rem; background: #ffebee;
+      color: #c62828; border: none; border-radius: 8px;
+      font-weight: 600; cursor: pointer; font-size: .9rem;
+    }
+    .perfil-acoes { display: flex; gap: .75rem; margin-top: 1rem; flex-wrap: wrap; }
+
+    #msg-perfil { margin-top: .75rem; }

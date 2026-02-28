@@ -47,10 +47,262 @@
 </head>
 
 <body>
-    <div id="header-placeholder"></div>
-    <main></main>
-    <div id="footer-placeholder"></div>
-    <script src="../js/main.js"></script>
+
+<div id="header-placeholder"></div>
+
+<div class="auth-wrapper">
+  <div class="auth-box">
+
+    <!-- ===== Painel do usuário logado ===== -->
+    <div id="painel-usuario">
+      <div class="perfil-info">
+        <div class="nome-usuario" id="perfil-nome"></div>
+        <div class="email-usuario" id="perfil-email"></div>
+      </div>
+
+      <div class="perfil-grid">
+        <div class="perfil-item">
+          <label>Nome</label>
+          <input type="text" id="perfil-input-nome" />
+        </div>
+        <div class="perfil-item">
+          <label>Sobrenome</label>
+          <input type="text" id="perfil-input-sobrenome" />
+        </div>
+        <div class="perfil-item">
+          <label>Idade</label>
+          <input type="number" id="perfil-input-idade" min="0" max="120" />
+        </div>
+        <div class="perfil-item">
+          <label>Profissão</label>
+          <input type="text" id="perfil-input-profissao" />
+        </div>
+      </div>
+
+      <div class="msg" id="msg-perfil"></div>
+
+      <div class="perfil-acoes">
+        <button class="btn-secundario" onclick="salvarPerfil()">Salvar alterações</button>
+        <button onclick="window.location.href='/favoritos/'" class="btn-secundario">❤️ Meus favoritos</button>
+        <button class="btn-logout" onclick="window.Auth.logout()">Sair</button>
+      </div>
+    </div>
+
+    <!-- ===== Abas login/cadastro ===== -->
+    <div id="painel-auth">
+      <div class="tabs">
+        <button class="tab ativo" id="tab-login"    onclick="mudarAba('login')">Entrar</button>
+        <button class="tab"       id="tab-cadastro" onclick="mudarAba('cadastro')">Criar conta</button>
+      </div>
+
+      <!-- Login -->
+      <div class="form-panel ativo" id="form-login">
+        <button class="btn-google" onclick="window.location.href='/api/auth/google'">
+          <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Continuar com Google
+        </button>
+
+        <div class="divider">ou</div>
+
+        <div class="msg" id="msg-login"></div>
+
+        <div class="campo">
+          <label>E-mail</label>
+          <input type="email" id="login-email" placeholder="seu@email.com" />
+        </div>
+        <div class="campo">
+          <label>Senha</label>
+          <input type="password" id="login-senha" placeholder="••••••••" />
+        </div>
+
+        <button class="btn-primary" id="btn-login" onclick="fazerLogin()">Entrar</button>
+
+        <p class="trocar-form">Não tem conta? <a onclick="mudarAba('cadastro')">Criar conta</a></p>
+      </div>
+
+      <!-- Cadastro -->
+      <div class="form-panel" id="form-cadastro">
+        <button class="btn-google" onclick="window.location.href='/api/auth/google'">
+          <svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.18 1.48-4.97 2.31-8.16 2.31-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>
+          Cadastrar com Google
+        </button>
+
+        <div class="divider">ou</div>
+
+        <div class="msg" id="msg-cadastro"></div>
+
+        <div class="campos-2">
+          <div class="campo">
+            <label>Nome *</label>
+            <input type="text" id="cad-nome" placeholder="João" />
+          </div>
+          <div class="campo">
+            <label>Sobrenome *</label>
+            <input type="text" id="cad-sobrenome" placeholder="Silva" />
+          </div>
+        </div>
+        <div class="campo">
+          <label>E-mail *</label>
+          <input type="email" id="cad-email" placeholder="seu@email.com" />
+        </div>
+        <div class="campo">
+          <label>Senha *</label>
+          <input type="password" id="cad-senha" placeholder="Mínimo 6 caracteres" />
+        </div>
+        <div class="campos-2">
+          <div class="campo">
+            <label>Idade</label>
+            <input type="number" id="cad-idade" placeholder="25" min="0" max="120" />
+          </div>
+          <div class="campo">
+            <label>Profissão</label>
+            <input type="text" id="cad-profissao" placeholder="Desenvolvedor" />
+          </div>
+        </div>
+
+        <button class="btn-primary" id="btn-cadastro" onclick="fazerCadastro()">Criar conta</button>
+
+        <p class="trocar-form">Já tem conta? <a onclick="mudarAba('login')">Entrar</a></p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div id="footer-placeholder"></div>
+
+<script src="../js/main.js"></script>
+<script src="../js/auth.js"></script>
+<script>
+  function mudarAba(aba) {
+    document.getElementById('form-login').classList.toggle('ativo', aba === 'login');
+    document.getElementById('form-cadastro').classList.toggle('ativo', aba === 'cadastro');
+    document.getElementById('tab-login').classList.toggle('ativo', aba === 'login');
+    document.getElementById('tab-cadastro').classList.toggle('ativo', aba === 'cadastro');
+  }
+
+  function mostrarMsg(id, texto, tipo) {
+    const el = document.getElementById(id);
+    el.textContent   = texto;
+    el.className     = `msg ${tipo}`;
+    el.style.display = 'block';
+  }
+
+  // ---- Login ----
+  document.getElementById('login-senha').addEventListener('keydown', e => {
+    if (e.key === 'Enter') fazerLogin();
+  });
+
+  async function fazerLogin() {
+    const email = document.getElementById('login-email').value.trim();
+    const senha = document.getElementById('login-senha').value;
+    const btn   = document.getElementById('btn-login');
+
+    if (!email || !senha) { mostrarMsg('msg-login', 'Preencha e-mail e senha.', 'erro'); return; }
+
+    btn.disabled = true;
+    btn.textContent = 'Entrando…';
+
+    try {
+      const resp  = await fetch('/api/auth/login', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ email, senha }),
+      });
+      const dados = await resp.json();
+
+      if (!resp.ok) { mostrarMsg('msg-login', dados.erro || 'Erro ao entrar.', 'erro'); return; }
+
+      window.Auth.setToken(dados.token);
+      window.location.href = '/';
+    } catch {
+      mostrarMsg('msg-login', 'Erro de conexão.', 'erro');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Entrar';
+    }
+  }
+
+  // ---- Cadastro ----
+  async function fazerCadastro() {
+    const nome      = document.getElementById('cad-nome').value.trim();
+    const sobrenome = document.getElementById('cad-sobrenome').value.trim();
+    const email     = document.getElementById('cad-email').value.trim();
+    const senha     = document.getElementById('cad-senha').value;
+    const idade     = document.getElementById('cad-idade').value.trim();
+    const profissao = document.getElementById('cad-profissao').value.trim();
+    const btn       = document.getElementById('btn-cadastro');
+
+    if (!nome || !sobrenome || !email || !senha) {
+      mostrarMsg('msg-cadastro', 'Preencha os campos obrigatórios (*).', 'erro'); return;
+    }
+    if (senha.length < 6) {
+      mostrarMsg('msg-cadastro', 'A senha deve ter pelo menos 6 caracteres.', 'erro'); return;
+    }
+
+    btn.disabled = true;
+    btn.textContent = 'Criando conta…';
+
+    try {
+      const resp  = await fetch('/api/auth/register', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ nome, sobrenome, email, senha, idade: idade || undefined, profissao: profissao || undefined }),
+      });
+      const dados = await resp.json();
+
+      if (!resp.ok) { mostrarMsg('msg-cadastro', dados.erro || 'Erro ao criar conta.', 'erro'); return; }
+
+      window.Auth.setToken(dados.token);
+      window.location.href = '/';
+    } catch {
+      mostrarMsg('msg-cadastro', 'Erro de conexão.', 'erro');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Criar conta';
+    }
+  }
+
+  // ---- Perfil ----
+  async function salvarPerfil() {
+    const nome      = document.getElementById('perfil-input-nome').value.trim();
+    const sobrenome = document.getElementById('perfil-input-sobrenome').value.trim();
+    const idade     = document.getElementById('perfil-input-idade').value.trim();
+    const profissao = document.getElementById('perfil-input-profissao').value.trim();
+
+    const resp = await window.Auth.fetchAuth('/api/auth/me', {
+      method: 'PUT',
+      body:   JSON.stringify({ nome, sobrenome, idade: idade || null, profissao: profissao || null }),
+    });
+    const dados = await resp.json();
+
+    if (resp.ok) {
+      mostrarMsg('msg-perfil', '✅ Perfil atualizado!', 'sucesso');
+      document.getElementById('perfil-nome').textContent = `${dados.nome} ${dados.sobrenome}`;
+    } else {
+      mostrarMsg('msg-perfil', dados.erro || 'Erro ao salvar.', 'erro');
+    }
+  }
+
+  // ---- Inicialização ----
+  document.addEventListener('DOMContentLoaded', () => {
+    if (window.Auth?.estaLogado()) {
+      const u = window.Auth.getUsuario();
+      document.getElementById('painel-auth').style.display    = 'none';
+      document.getElementById('painel-usuario').style.display = 'block';
+      document.getElementById('perfil-nome').textContent  = `${u.nome} ${u.sobrenome}`;
+
+      // Carrega dados completos do perfil
+      window.Auth.fetchAuth('/api/auth/me').then(r => r.json()).then(dados => {
+        document.getElementById('perfil-email').textContent         = dados.email || '';
+        document.getElementById('perfil-input-nome').value          = dados.nome      || '';
+        document.getElementById('perfil-input-sobrenome').value     = dados.sobrenome || '';
+        document.getElementById('perfil-input-idade').value         = dados.idade     || '';
+        document.getElementById('perfil-input-profissao').value     = dados.profissao || '';
+      });
+    }
+  });
+</script>
 </body>
 
 </html>
