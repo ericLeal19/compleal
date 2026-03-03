@@ -22,9 +22,9 @@ main {
     align-items: center;
     justify-content: center;
     flex-wrap: wrap;
-    padding: 15px 5%;
+    padding: 10px 5%;
     background-color: #0d0b26;
-    gap: 20px;
+    gap: 10px;
     height: auto;
     width: auto;
 }
@@ -44,14 +44,14 @@ main {
 
 .nav-tools {
     display: flex;
-    flex: 2;
-    gap: 10px;
+    flex: 0 0 auto;
+    gap: 8px;
     align-items: center;
     list-style: none;
-    justify-content: center;
+    justify-content: flex-end;
     margin: 0;
     padding: 0;
-    font-size: 14px;
+    font-size: 16px;
     text-align: center;
     text-size-adjust: 100%;
     cursor: pointer;
@@ -64,6 +64,7 @@ main {
     color: white;
     text-decoration: none;
     display: block; /* Garante que toda a área seja clicável */
+    text-align: center;
 }
 
 .nav-item {
@@ -79,12 +80,17 @@ main {
     border-radius: 12px;
 }
 
+.imgLogin {
+  width: 30px;
+  height: 30px;
+}
+
 .nav-search-container {
     position: static; 
     transform: none;
     flex-grow: 1;
     margin: 0 20px;
-    max-width: 600px;
+    max-width: 700px;
     display: flex;
 }
 
@@ -92,14 +98,14 @@ main {
 .nav-search {
     display: flex;
     flex-grow: 1;
-    max-width: 600px;
-    margin: 5px;
+    max-width: 700px;
+    margin: 8px;
     width: 100%;
 }
 
 .nav-search input[type="text"] {
     flex-grow: 1;
-    padding: 8px;
+    padding: 10px;
     border: none;
     border-radius: 4px 0 0 4px;
 }
@@ -123,7 +129,7 @@ main {
 .nav-bottom-filters ul {
     display: flex;
     justify-content: center;
-    gap: 30px;
+    gap: 40px;
     list-style: none;
     margin: 0;
     padding: 0;
@@ -133,7 +139,7 @@ main {
 .nav-bottom-filters a {
     color: white;
     text-decoration: none;
-    font-size: 14px;
+    font-size: 16px;
     padding: 8px;
     display: block;
     border-radius: 4px; /* Adicionado para ficar bom na transição */
@@ -222,13 +228,13 @@ main {
         justify-content: center;
     }
 
-    .product-grid {
+    .produtos-container {
         grid-template-columns: repeat(2, 1fr); /* 2 colunas no tablet */
     }
 }
 
 @media (max-width: 480px) {
-    .product-grid {
+    .produtos-container {
         grid-template-columns: 1fr; /* 1 coluna no celular */
     }
 }

@@ -3,7 +3,9 @@
 //  Exibe produtos cadastrados pelo admin com botão de favorito.
 // ============================================================
 
-const BUSCA_PADRAO = 'notebook';
+let todosOsProdutos = [];
+
+// ---- Formatadores ----
 
 function formatarPreco(preco) {
   return preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -17,7 +19,7 @@ function formatarCondicao(condition) {
 
 function renderizarEstrelas(rating) {
   if (!rating) return '';
-  if (rating >= 4.8) rating = 5; // Regra adicionada para arredondar avaliações muito próximas de 5
+  if (rating >= 4.8) rating = 5;
   const cheias = Math.floor(rating);
   const meia   = rating - cheias >= 0.5 ? 1 : 0;
   const vazias = 5 - cheias - meia;
@@ -30,98 +32,157 @@ function formatarVendidos(sold) {
   return `+${sold} vendidos`;
 }
 
-function renderizarProdutos(produtos, termo = '') {
-  const container = document.getElementById('produtos-ml');
+// ---- Lazy loading com IntersectionObserver ----
+
+const observadorImagens = new IntersectionObserver((entries, obs) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) return;
+    const img = entry.target;
+    if (img.dataset.src) {
+      img.src = img.dataset.src;
+      img.removeAttribute('data-src');
+    }
+    obs.unobserve(img);
+  });
+}, { rootMargin: '200px' });
+
+// ---- Renderizacao ----
+
+function renderizarProdutos(produtos, termo) {
+  termo = termo || '';
+  const container  = document.getElementById('produtos-ml');
+  const btnVerMais = document.getElementById('btn-ver-mais');
   if (!container) return;
 
   const filtrados = termo
-    ? produtos.filter(p => p.title.toLowerCase().includes(termo.toLowerCase()))
+    ? produtos.filter(function(p) { return p.title.toLowerCase().includes(termo.toLowerCase()); })
     : produtos;
 
   if (!filtrados || filtrados.length === 0) {
     container.innerHTML = '<p class="sem-produtos">Nenhum produto encontrado.</p>';
+    if (btnVerMais) btnVerMais.classList.remove('visivel');
     return;
   }
 
-  container.innerHTML = filtrados.map(produto => {
-    const imgSrc     = produto.thumbnail || '';
-    const link       = produto.affiliate_link || '#';
-    const preco      = produto.price ? formatarPreco(produto.price) : 'Ver preço';
-    const condicao   = formatarCondicao(produto.condition);
-    const favoritado = window.Auth?.ehFavorito(produto.id) ? 'favoritado' : '';
+  container.innerHTML = filtrados.map(function(produto) {
+    const imgSrc   = produto.thumbnail || '';
+    const link     = produto.affiliate_link || '#';
+    const preco    = produto.price ? formatarPreco(produto.price) : 'Ver preco';
+    const condicao = formatarCondicao(produto.condition);
+    const favoritado = window.Auth && window.Auth.ehFavorito(produto.id) ? 'favoritado' : '';
 
-    const avaliacaoHtml = produto.reviews?.rating ? `
-      <div class="product-reviews">
-        <span class="stars">${renderizarEstrelas(produto.reviews.rating)}</span>
-        <span class="rating-value">${produto.reviews.rating.toFixed(1)}</span>
-        ${produto.reviews.count ? `<span class="review-count">(${produto.reviews.count})</span>` : ''}
-      </div>` : '';
+    const avaliacaoHtml = produto.reviews && produto.reviews.rating ? (
+      '<div class="product-reviews">' +
+        '<span class="stars">' + renderizarEstrelas(produto.reviews.rating) + '</span>' +
+        '<span class="rating-value">' + produto.reviews.rating.toFixed(1) + '</span>' +
+        (produto.reviews.count ? '<span class="review-count">(' + produto.reviews.count + ')</span>' : '') +
+      '</div>'
+    ) : '';
 
     const vendidosHtml = produto.sold
-      ? `<span class="product-sold">${formatarVendidos(produto.sold)}</span>` : '';
+      ? '<span class="product-sold">' + formatarVendidos(produto.sold) + '</span>'
+      : '';
 
-    return `
-      <div class="card">
-        <button
-          class="btn-favorito ${favoritado}"
-          data-fav-id="${produto.id}"
-          title="${favoritado ? 'Remover dos favoritos' : 'Adicionar aos favoritos'}"
-          onclick="window.Auth?.toggleFavorito('${produto.id}', this)"
-        >♡</button>
-        <a href="${link}" target="_blank" rel="noopener noreferrer">
-          <img class="product-img" src="${imgSrc}" alt="${produto.title}"
-               loading="lazy" onerror="this.style.display='none'" />
-        </a>
-        <div class="card-body">
-          ${condicao ? `<span class="product-condition">${condicao}</span>` : ''}
-          <p class="product-title">${produto.title}</p>
-          ${avaliacaoHtml}
-          ${vendidosHtml}
-          <p class="product-price">${preco}</p>
-          <div class="button-group">
-            <a class="btn-ver-ml" href="${link}" target="_blank" rel="noopener noreferrer">
-              Comprar no Site
-            </a>
-          </div>
-        </div>
-      </div>
-    `;
+    return (
+      '<div class="card">' +
+        '<button class="btn-favorito ' + favoritado + '" data-fav-id="' + produto.id + '"' +
+          ' title="' + (favoritado ? 'Remover dos favoritos' : 'Adicionar aos favoritos') + '"' +
+          ' onclick="window.Auth && window.Auth.toggleFavorito(\'' + produto.id + '\', this)">&#9825;</button>' +
+        '<a href="' + link + '" target="_blank" rel="noopener noreferrer">' +
+          '<img class="product-img"' +
+            ' src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"' +
+            ' data-src="' + imgSrc + '"' +
+            ' alt="' + produto.title + '"' +
+            ' onerror="this.style.display=\'none\'" />' +
+        '</a>' +
+        '<div class="card-body">' +
+          (condicao ? '<span class="product-condition">' + condicao + '</span>' : '') +
+          '<p class="product-title">' + produto.title + '</p>' +
+          avaliacaoHtml +
+          vendidosHtml +
+          '<p class="product-price">' + preco + '</p>' +
+          '<div class="button-group">' +
+            '<a class="btn-ver-ml" href="' + link + '" target="_blank" rel="noopener noreferrer">Comprar no Site</a>' +
+          '</div>' +
+        '</div>' +
+      '</div>'
+    );
   }).join('');
+
+  // Ativa lazy loading em todas as imagens renderizadas
+  container.querySelectorAll('img[data-src]').forEach(function(img) {
+    observadorImagens.observe(img);
+  });
+
+  // Mostra ou esconde o botao "ver mais"
+  if (btnVerMais) {
+    if (filtrados.length > 9) {
+      btnVerMais.classList.add('visivel');
+    } else {
+      btnVerMais.classList.remove('visivel');
+    }
+  }
 }
 
-let todosOsProdutos = [];
+// ---- Carregamento dos produtos ----
 
 async function carregarProdutos() {
   const container = document.getElementById('produtos-ml');
   if (!container) return;
-  container.innerHTML = '<div class="loading">Carregando produtos…</div>';
+  container.innerHTML = '<div class="loading">Carregando produtos</div>';
 
   try {
     const resposta = await fetch('/api/produtos');
-    if (!resposta.ok) throw new Error(`Erro ${resposta.status}`);
+    if (!resposta.ok) throw new Error('Erro ' + resposta.status);
     todosOsProdutos = await resposta.json();
     renderizarProdutos(todosOsProdutos);
   } catch (erro) {
-    container.innerHTML = `
-      <div class="erro">Não foi possível carregar os produtos.<br><small>${erro.message}</small></div>`;
+    container.innerHTML =
+      '<div class="erro">Nao foi possivel carregar os produtos.<br><small>' + erro.message + '</small></div>';
   }
 }
 
+// ---- Busca ----
+
 function configurarBusca() {
-  const intervalo = setInterval(() => {
+  const intervalo = setInterval(function() {
     const form = document.querySelector('.nav-search');
     if (!form) return;
     clearInterval(intervalo);
     form.addEventListener('submit', function(e) {
       e.preventDefault();
-      const termo = form.querySelector('input[type="text"]')?.value?.trim() || '';
+      const input = form.querySelector('input[type="text"]');
+      const termo = input ? input.value.trim() : '';
       renderizarProdutos(todosOsProdutos, termo);
-      document.getElementById('container-produtos')?.scrollIntoView({ behavior: 'smooth' });
+      const secao = document.getElementById('container-produtos');
+      if (secao) secao.scrollIntoView({ behavior: 'smooth' });
     });
   }, 200);
 }
 
-document.addEventListener('DOMContentLoaded', () => {
+// ---- Botao "Ver mais" ----
+
+function configurarBtnVerMais() {
+  const btn  = document.getElementById('btn-ver-mais');
+  const grid = document.getElementById('produtos-ml');
+  if (!btn || !grid) return;
+
+  btn.addEventListener('click', function() {
+    grid.classList.add('mostrar-todos');
+    btn.classList.remove('visivel');
+
+    // Ativa lazy loading nos cards que acabaram de aparecer
+    grid.querySelectorAll('img[data-src]').forEach(function(img) {
+      observadorImagens.observe(img);
+    });
+  });
+}
+
+// ---- Init ----
+
+document.addEventListener('DOMContentLoaded', function() {
+  if (typeof carregarComponentes === 'function') carregarComponentes();
   carregarProdutos();
   configurarBusca();
+  configurarBtnVerMais();
 });

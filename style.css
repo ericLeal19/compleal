@@ -1,15 +1,20 @@
 /* --- GRID DE PRODUTOS --- */
 /* Movi para CIMA das Media Queries para a cascata funcionar */
-.product-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    gap: 20px; 
-    justify-items: center; 
+/* Container principal apenas centraliza e limita a largura */
+/* Container que envolve tudo, centraliza e dá margens */
+.produtos-container {
     padding: 40px 20px;
     max-width: 900px;
     margin: 0 auto;
 }
 
+/* O grid real onde os produtos ficarão lado a lado */
+.produtos-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    gap: 20px; 
+    justify-items: center; 
+}
 /* --- ESTILOS DOS CARDS --- */
 .card {
   width: 200px;
@@ -26,7 +31,8 @@
 
 .product-img {
   width: 100%;
-  height: auto;
+  height: 200px;
+  object-fit: contain;
   margin-bottom: 15px;
 }
 
@@ -37,14 +43,18 @@
   margin-bottom: 20px;
   display: -webkit-box;
   line-clamp: 3;
+  -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
   overflow: hidden;
+  line-height: 1.2em;
+  min-height: 3.6em; /* 3 linhas x 1.2em de altura */
 }
 
 .button-group {
   display: flex;
   gap: 10px;
   width: 100%;
+  margin-top: auto;
 }
 
 /* Específico para botões dentro do grupo de botões (evita quebrar a busca) */
@@ -59,11 +69,6 @@
 
 .btn-cart {
   background-color: #0d0b26;
-  color: white;
-}
-
-.btn-buy {
-  background-color: #ff9113;
   color: white;
 }
 
@@ -245,3 +250,30 @@
 
 /* Torna o .card position relative para o botão se posicionar nele */
 .card { position: relative; }
+
+/* Oculta do 10º cartão em diante */
+.produtos-grid .card:nth-child(n+10) {
+    display: none;
+}
+
+/* Classe ativada pelo JS para mostrar todos */
+.produtos-grid.mostrar-todos .card:nth-child(n+10) {
+    display: flex; /* Retorna o display flex padrão do seu card */
+}
+
+/* Estilo do botão centralizado */
+.btn-ver-mais {
+    display: none;
+    margin: 30px auto 0;
+    padding: 10px 20px;
+    background-color: #0d0b26;
+    color: #FFF;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-ver-mais.visivel {
+    display: block;
+}

@@ -31,6 +31,7 @@ function carregarComponentes() {
         })
         .catch(erro => console.error("Erro ao carregar o cabeçalho:", erro));
 
+
     // Carrega o Footer
     fetch(prefix + 'components/footer.html')
     .then(response => response.text())
@@ -41,6 +42,3 @@ function carregarComponentes() {
     })
     .catch(erro => console.error("Erro ao carregar o rodapé:", erro));
 }
-
-// Deixe apenas esta linha, apague o carregarComponentes() solto que tinha no fim
-document.addEventListener("DOMContentLoaded", carregarComponentes);
