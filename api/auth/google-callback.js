@@ -4,6 +4,7 @@
 // ============================================================
 import { redis }        from './_redis.js';
 import { assinarToken } from './_jwt.js';
+import { randomUUID } from 'crypto';
 
 export default async function handler(req, res) {
   const { code, error } = req.query;
@@ -47,7 +48,7 @@ export default async function handler(req, res) {
 
     if (!id) {
       // Novo usuário — cria conta
-      id = crypto.randomUUID();
+      id = randomUUID();
 
       const usuario = {
         id,

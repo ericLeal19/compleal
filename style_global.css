@@ -203,6 +203,20 @@ main {
     color: #4e6c76;
 }
 
+.iniciais-login {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #1c1a41;
+  color: #ff9113;
+  font-weight: 1000;
+  font-size: 13px;
+  pointer-events: none;
+}
+
 /* --- RESPONSIVIDADE --- */
 @media (max-width: 768px) {
     .nav-top {

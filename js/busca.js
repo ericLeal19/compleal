@@ -181,7 +181,6 @@ function configurarBtnVerMais() {
 // ---- Init ----
 
 document.addEventListener('DOMContentLoaded', function() {
-  if (typeof carregarComponentes === 'function') carregarComponentes();
   carregarProdutos();
   configurarBusca();
   configurarBtnVerMais();

@@ -105,18 +105,33 @@ function atualizarBotoesFavorito() {
 // ---- UI: botão de login/logout no header --------------------------
 function atualizarHeaderAuth() {
   const usuario = getUsuario();
-  const btn     = document.getElementById('btn-header-auth');
+  const btn = document.getElementById('btn-header-auth');
   if (!btn) return;
 
   if (usuario) {
-    btn.textContent = `Olá, ${usuario.nome}`;
-    btn.href        = '/login/';
-    btn.title       = 'Minha conta';
+    const i1 = (usuario.nome || '').trim()[0] || '';
+    const i2 = (usuario.sobrenome || '').trim()[0] || '';
+    btn.innerHTML = '<span class="iniciais-login">' + (i1+i2).toUpperCase() + '</span>';
+    btn.href = '/login/login.html';
+    btn.title = 'Minha conta';
+    btn.style.padding = '4px';
   } else {
-    btn.textContent = 'Entrar';
-    btn.href        = '/login/';
-    btn.title       = 'Fazer login';
+    btn.innerHTML = '<img class="imgLogin" src="../logo/Persona.png" alt="Imagen de Login"><br><strong>Login</strong>';
+    btn.href = '/login/login.html';
+    btn.title = 'Fazer login';
+    btn.style.padding = '';
   }
+}
+
+// Aguarda o header ser injetado via fetch antes de atualizar o botão
+function observarHeader() {
+  if (document.getElementById('btn-header-auth')) { atualizarHeaderAuth(); return; }
+  const placeholder = document.getElementById('header-placeholder');
+  if (!placeholder) return;
+  const obs = new MutationObserver(function() {
+    if (document.getElementById('btn-header-auth')) { obs.disconnect(); atualizarHeaderAuth(); }
+  });
+  obs.observe(placeholder, { childList: true, subtree: true });
 }
 
 function logout() {
@@ -125,14 +140,14 @@ function logout() {
 }
 
 // ---- Init ---------------------------------------------------------
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', function() {
   capturarTokenDaUrl();
-  atualizarHeaderAuth();
+  observarHeader(); // ← era atualizarHeaderAuth()
   carregarFavoritos();
 });
 
 // Expõe globalmente para uso inline no HTML
 window.Auth = {
   estaLogado, getUsuario, getToken, setToken, removeToken,
-  fetchAuth, toggleFavorito, ehFavorito, logout,
+  fetchAuth, toggleFavorito, ehFavorito, logout, atualizarHeaderAuth,
 };

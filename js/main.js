@@ -5,7 +5,6 @@ function carregarComponentes() {
                         window.location.pathname.includes('/ofertas/') ||
                         window.location.pathname.includes('/mais_vendidos/') ||
                         window.location.pathname.includes('/favorito/') ||
-                        window.location.pathname.includes('/carrinho/') ||
                         window.location.pathname.includes('/ajuda/');
 
     const prefix = isSubFolder ? '../' : './';
@@ -19,7 +18,6 @@ function carregarComponentes() {
                 .replace(/src="logo\//g, `src="${prefix}logo/`)
                 .replace(/href="login\//g, `href="${prefix}login/`)
                 .replace(/href="favorito\//g, `href="${prefix}favorito/`)
-                .replace(/href="carrinho\//g, `href="${prefix}carrinho/`)
                 .replace(/href="ajuda\//g, `href="${prefix}ajuda/`)
                 .replace(/href="reviews\//g, `href="${prefix}reviews/`)
                 .replace(/href="ofertas\//g, `href="${prefix}ofertas/`)
@@ -28,6 +26,9 @@ function carregarComponentes() {
                 .replace(/href="index\.html"/g, `href="${prefix}index.html"`);
 
             document.getElementById('header-placeholder').innerHTML = htmlCorrigido;
+            if (window.Auth && window.Auth.atualizarHeaderAuth) {
+            window.Auth.atualizarHeaderAuth();
+            }
         })
         .catch(erro => console.error("Erro ao carregar o cabeçalho:", erro));
 
@@ -42,3 +43,5 @@ function carregarComponentes() {
     })
     .catch(erro => console.error("Erro ao carregar o rodapé:", erro));
 }
+// Adicione isso no final do arquivo, após a função carregarComponentes
+document.addEventListener('DOMContentLoaded', carregarComponentes);

@@ -5,10 +5,10 @@
 import bcrypt    from 'bcryptjs';
 import { redis }      from './_redis.js';
 import { assinarToken } from './_jwt.js';
+import { randomUUID } from 'crypto';
 
 function gerarId() {
-  // crypto.randomUUID disponível no Node 14.17+
-  return crypto.randomUUID();
+  return randomUUID();
 }
 
 export default async function handler(req, res) {

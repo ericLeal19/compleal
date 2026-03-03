@@ -49,9 +49,124 @@
 
 <body>
     <div id="header-placeholder"></div>
-    <main></main>
+
+    <main class="produtos-container" id="container-favoritos">
+        <h1 class="favoritos-titulo">❤️ Meus Favoritos</h1>
+        <div id="favoritos-grid" class="produtos-grid"></div>
+    </main>
+
     <div id="footer-placeholder"></div>
+
     <script src="../js/main.js"></script>
+    <script src="../js/auth.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        if (!window.Auth || !window.Auth.estaLogado()) {
+            window.location.href = '../login/login.html?redirect=favorito.html';
+            return;
+        }
+        carregarFavoritosPage();
+    });
+
+    function formatarPreco(preco) {
+        return preco.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+    function formatarCondicao(c) {
+        if (c === 'new') return 'Novo'; if (c === 'used') return 'Usado'; return '';
+    }
+    function renderizarEstrelas(rating) {
+        if (!rating) return '';
+        if (rating >= 4.8) rating = 5;
+        var ch = Math.floor(rating), m = rating - ch >= 0.5 ? 1 : 0, v = 5 - ch - m;
+        return '★'.repeat(ch) + (m ? '⯪' : '') + '☆'.repeat(v);
+    }
+    function formatarVendidos(sold) {
+        if (!sold) return null;
+        if (sold >= 1000) return '+' + (sold/1000).toFixed(1).replace('.', ',') + 'mil vendidos';
+        return '+' + sold + ' vendidos';
+    }
+
+    async function carregarFavoritosPage() {
+        var grid = document.getElementById('favoritos-grid');
+        grid.innerHTML = '<div class="loading">Carregando favoritos</div>';
+
+        try {
+            var resp = await window.Auth.fetchAuth('/api/favoritos');
+            if (!resp.ok) throw new Error('Erro ' + resp.status);
+            var produtos = await resp.json();
+
+            if (!produtos || produtos.length === 0) {
+                grid.innerHTML =
+                    '<div class="sem-produtos">' +
+                        '😕 Você ainda não tem favoritos.<br>' +
+                        '<a href="/" style="color:#0d0b26;font-weight:700;margin-top:12px;display:inline-block;">Ver produtos</a>' +
+                    '</div>';
+                return;
+            }
+
+            grid.innerHTML = produtos.map(function(produto) {
+                var imgSrc   = produto.thumbnail || '';
+                var link     = produto.affiliate_link || '#';
+                var preco    = produto.price ? formatarPreco(produto.price) : 'Ver preço';
+                var condicao = formatarCondicao(produto.condition);
+
+                var avalHtml = produto.reviews && produto.reviews.rating
+                    ? '<div class="product-reviews">' +
+                        '<span class="stars">' + renderizarEstrelas(produto.reviews.rating) + '</span>' +
+                        '<span class="rating-value">' + produto.reviews.rating.toFixed(1) + '</span>' +
+                        (produto.reviews.count ? '<span class="review-count">(' + produto.reviews.count + ')</span>' : '') +
+                      '</div>' : '';
+
+                var vendHtml = produto.sold
+                    ? '<span class="product-sold">' + formatarVendidos(produto.sold) + '</span>' : '';
+
+                return '<div class="card" id="card-' + produto.id + '">' +
+                    '<button class="btn-favorito favoritado" data-fav-id="' + produto.id + '"' +
+                        ' title="Remover dos favoritos"' +
+                        ' onclick="removerFavorito(\'' + produto.id + '\', this)">&#9829;</button>' +
+                    '<a href="' + link + '" target="_blank" rel="noopener noreferrer">' +
+                        '<img class="product-img" src="' + imgSrc + '" alt="' + produto.title + '"' +
+                            ' onerror="this.style.display=\'none\'" loading="lazy" />' +
+                    '</a>' +
+                    '<div class="card-body">' +
+                        (condicao ? '<span class="product-condition">' + condicao + '</span>' : '') +
+                        '<p class="product-title">' + produto.title + '</p>' +
+                        avalHtml + vendHtml +
+                        '<p class="product-price">' + preco + '</p>' +
+                        '<div class="button-group">' +
+                            '<a class="btn-ver-ml" href="' + link + '" target="_blank" rel="noopener noreferrer">Comprar no Site</a>' +
+                        '</div>' +
+                    '</div>' +
+                '</div>';
+            }).join('');
+
+        } catch(e) {
+            grid.innerHTML = '<div class="erro">Não foi possível carregar os favoritos.<br><small>' + e.message + '</small></div>';
+        }
+    }
+
+    async function removerFavorito(produto_id) {
+        try {
+            var resp = await window.Auth.fetchAuth('/api/favoritos?id=' + produto_id, { method: 'DELETE' });
+            if (!resp.ok) throw new Error();
+            var card = document.getElementById('card-' + produto_id);
+            if (card) {
+                card.style.transition = 'opacity .3s, transform .3s';
+                card.style.opacity = '0';
+                card.style.transform = 'scale(0.9)';
+                setTimeout(function() {
+                    card.remove();
+                    var grid = document.getElementById('favoritos-grid');
+                    if (grid && grid.children.length === 0) {
+                        grid.innerHTML =
+                            '<div class="sem-produtos">😕 Você ainda não tem favoritos.<br>' +
+                            '<a href="/" style="color:#0d0b26;font-weight:700;margin-top:12px;display:inline-block;">Ver produtos</a></div>';
+                    }
+                }, 300);
+            }
+        } catch(e) { console.error('Erro ao remover favorito:', e); }
+    }
+    </script>
 </body>
 
 </html>
