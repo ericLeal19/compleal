@@ -1,6 +1,6 @@
 // ============================================================
 //  js/busca.js — Script FRONTEND
-//  Exibe produtos cadastrados pelo admin com botão de favorito.
+//  Exibe produtos cadastrados pelo admin
 // ============================================================
 
 let todosOsProdutos = [];
@@ -32,7 +32,7 @@ function formatarVendidos(sold) {
   return `+${sold} vendidos`;
 }
 
-// ---- Lazy loading com IntersectionObserver ----
+// ---- Carrega a imagem com IntersectionObserver (performance)----
 
 const observadorImagens = new IntersectionObserver((entries, obs) => {
   entries.forEach(entry => {
@@ -46,26 +46,34 @@ const observadorImagens = new IntersectionObserver((entries, obs) => {
   });
 }, { rootMargin: '200px' });
 
-// ---- Renderizacao ----
+// ---- Renderizacao dos produtos totais e filtrados ----
 
 function renderizarProdutos(produtos, termo) {
   termo = termo || '';
-  const container  = document.getElementById('produtos-ml');
+  const container  = document.getElementById('info-produtos');
   const btnVerMais = document.getElementById('btn-ver-mais');
   if (!container) return;
 
-  const filtrados = termo
-    ? produtos.filter(function(p) { return p.title.toLowerCase().includes(termo.toLowerCase()); })
-    : produtos;
+  // Normaliza o termo de busca apenas UMA vez (aceita busca de títulos com acentos)
+const buscaLimpa = termo.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
 
+const filtrados = termo
+  ? produtos.filter(p => 
+      p.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').includes(buscaLimpa)
+    )
+  : produtos;
+
+  // Se não encontrar nenhum produto, mostra mensagem e esconde botão "ver mais"
   if (!filtrados || filtrados.length === 0) {
     container.innerHTML = '<p class="sem-produtos">Nenhum produto encontrado.</p>';
     if (btnVerMais) btnVerMais.classList.remove('visivel');
     return;
   }
 
+
   container.innerHTML = filtrados.map(function(produto) {
-    const imgSrc   = produto.thumbnail || '';
+    // Transforma os dados do produto em HTML
+    const imgSrc   = produto.thumbnail || 'Sem Imagem';
     const link     = produto.affiliate_link || '#';
     const preco    = produto.price ? formatarPreco(produto.price) : 'Ver preco';
     const condicao = formatarCondicao(produto.condition);
@@ -89,7 +97,7 @@ function renderizarProdutos(produtos, termo) {
           ' title="' + (favoritado ? 'Remover dos favoritos' : 'Adicionar aos favoritos') + '"' +
           ' onclick="window.Auth && window.Auth.toggleFavorito(\'' + produto.id + '\', this)">&#9825;</button>' +
         '<a href="' + link + '" target="_blank" rel="noopener noreferrer">' +
-          '<img class="product-img"' +
+          '<img class="produto-img"' +
             ' src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7"' +
             ' data-src="' + imgSrc + '"' +
             ' alt="' + produto.title + '"' +
@@ -127,10 +135,11 @@ function renderizarProdutos(produtos, termo) {
 // ---- Carregamento dos produtos ----
 
 async function carregarProdutos() {
-  const container = document.getElementById('produtos-ml');
+  const container = document.getElementById('info-produtos');
   if (!container) return;
   container.innerHTML = '<div class="loading">Carregando produtos</div>';
 
+  // Processa os produtos do backend (/api/produtos) e renderiza
   try {
     const resposta = await fetch('/api/produtos');
     if (!resposta.ok) throw new Error('Erro ' + resposta.status);
@@ -138,15 +147,16 @@ async function carregarProdutos() {
     renderizarProdutos(todosOsProdutos);
   } catch (erro) {
     container.innerHTML =
-      '<div class="erro">Nao foi possivel carregar os produtos.<br><small>' + erro.message + '</small></div>';
+      '<div class="erro">Não foi possivel carregar os produtos.<br><small>' + erro.message + '</small></div>';
   }
 }
 
-// ---- Busca ----
+
+// ---- Busca na caixa de pesquisa----
 
 function configurarBusca() {
   const intervalo = setInterval(function() {
-    const form = document.querySelector('.nav-search');
+    const form = document.querySelector('.entrada-busca');
     if (!form) return;
     clearInterval(intervalo);
     form.addEventListener('submit', function(e) {
@@ -154,8 +164,6 @@ function configurarBusca() {
       const input = form.querySelector('input[type="text"]');
       const termo = input ? input.value.trim() : '';
       renderizarProdutos(todosOsProdutos, termo);
-      const secao = document.getElementById('container-produtos');
-      if (secao) secao.scrollIntoView({ behavior: 'smooth' });
     });
   }, 200);
 }
@@ -164,7 +172,7 @@ function configurarBusca() {
 
 function configurarBtnVerMais() {
   const btn  = document.getElementById('btn-ver-mais');
-  const grid = document.getElementById('produtos-ml');
+  const grid = document.getElementById('info-produtos');
   if (!btn || !grid) return;
 
   btn.addEventListener('click', function() {

@@ -25,7 +25,7 @@ function carregarComponentes() {
                 .replace(/href="sobre\//g, `href="${prefix}sobre/`)
                 .replace(/href="index\.html"/g, `href="${prefix}index.html"`);
 
-            document.getElementById('header-placeholder').innerHTML = htmlCorrigido;
+            document.getElementById('cabeca-menu').innerHTML = htmlCorrigido;
             if (window.Auth && window.Auth.atualizarHeaderAuth) {
             window.Auth.atualizarHeaderAuth();
             }
@@ -39,7 +39,7 @@ function carregarComponentes() {
     .then(data => {
         // Se precisar corrigir caminhos no footer também:
         let htmlCorrigido = data.replace(/href="index\.html"/g, `href="${prefix}index.html"`);
-        document.getElementById('footer-placeholder').innerHTML = htmlCorrigido;
+        document.getElementById('rodape').innerHTML = htmlCorrigido;
     })
     .catch(erro => console.error("Erro ao carregar o rodapé:", erro));
 }

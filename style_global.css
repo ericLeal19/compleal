@@ -34,7 +34,7 @@ main {
     height: auto;   
 }
 
-.nav-marca {
+.nome-marca {
     margin: 0;
     color: white;
     font-size: 32px;
@@ -42,7 +42,7 @@ main {
     font-family: 'League Spartan', sans-serif;
 }
 
-.nav-tools {
+.nav-menu {
     display: flex;
     flex: 0 0 auto;
     gap: 8px;
@@ -67,7 +67,7 @@ main {
     text-align: center;
 }
 
-.nav-item {
+.item-menu {
     padding: 10px 15px;
     line-height: 1.4;
     border-radius: 6px;
@@ -75,7 +75,7 @@ main {
     transition: background-color 0.2s; /* Transição movida para cá */
 }
 
-.nav-item:hover {
+.item-menu:hover {
     background-color: #3b4a52;
     border-radius: 12px;
 }
@@ -85,7 +85,7 @@ main {
   height: 30px;
 }
 
-.nav-search-container {
+.barra-pesquisa {
     position: static; 
     transform: none;
     flex-grow: 1;
@@ -95,7 +95,7 @@ main {
 }
 
 /* Barra de Pesquisa */
-.nav-search {
+.entrada-busca {
     display: flex;
     flex-grow: 1;
     max-width: 700px;
@@ -103,14 +103,14 @@ main {
     width: 100%;
 }
 
-.nav-search input[type="text"] {
+.entrada-busca input[type="text"] {
     flex-grow: 1;
     padding: 10px;
     border: none;
     border-radius: 4px 0 0 4px;
 }
 
-.nav-search button[type="submit"] {
+.entrada-busca button[type="submit"] {
     padding: 8px 12px;
     background-color: #ff9113;
     color: #0d0b26;
@@ -121,12 +121,12 @@ main {
 }
 
 /* Barra de Filtros */
-.nav-bottom-filters {
+.nav-filtros {
     background-color: #4e6c76;
     padding: 5px 20px;
 }
 
-.nav-bottom-filters ul {
+.nav-filtros ul {
     display: flex;
     justify-content: center;
     gap: 40px;
@@ -136,7 +136,7 @@ main {
     flex-wrap: wrap;
 }
 
-.nav-bottom-filters a {
+.nav-filtros a {
     color: white;
     text-decoration: none;
     font-size: 16px;
@@ -146,7 +146,7 @@ main {
     transition: background-color 0.2s; /* Transição suave */
 }
 
-.nav-bottom-filters a:hover {
+.nav-filtros a:hover {
     background-color: #3b4a52;
 }
 
@@ -225,30 +225,30 @@ main {
         gap: 15px;
     }
 
-    .nav-search-container {
+    .barra-pesquisa {
         width: 100%;
         margin: 0;
         order: 2;
     }
 
-    .nav-tools {
+    .nav-menu {
         width: 100%;
         justify-content: center;
         order: 3;
     }
     
-    .nav-bottom-filters ul {
+    .nav-filtros ul {
         flex-wrap: wrap;
         justify-content: center;
     }
 
-    .produtos-container {
+    .grade-produtos {
         grid-template-columns: repeat(2, 1fr); /* 2 colunas no tablet */
     }
 }
 
 @media (max-width: 480px) {
-    .produtos-container {
+    .grade-produtos {
         grid-template-columns: 1fr; /* 1 coluna no celular */
     }
 }

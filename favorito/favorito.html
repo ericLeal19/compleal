@@ -48,14 +48,14 @@
 </head>
 
 <body>
-    <div id="header-placeholder"></div>
+    <div id="cabeca-menu"></div>
 
-    <main class="produtos-container" id="container-favoritos">
+    <main class="grade-produtos" id="container-favoritos">
         <h1 class="favoritos-titulo">❤️ Meus Favoritos</h1>
-        <div id="favoritos-grid" class="produtos-grid"></div>
+        <div id="favoritos-grid" class="produtos"></div>
     </main>
 
-    <div id="footer-placeholder"></div>
+    <div id="rodape"></div>
 
     <script src="../js/main.js"></script>
     <script src="../js/auth.js"></script>
@@ -125,7 +125,7 @@
                         ' title="Remover dos favoritos"' +
                         ' onclick="removerFavorito(\'' + produto.id + '\', this)">&#9829;</button>' +
                     '<a href="' + link + '" target="_blank" rel="noopener noreferrer">' +
-                        '<img class="product-img" src="' + imgSrc + '" alt="' + produto.title + '"' +
+                        '<img class="produto-img" src="' + imgSrc + '" alt="' + produto.title + '"' +
                             ' onerror="this.style.display=\'none\'" loading="lazy" />' +
                     '</a>' +
                     '<div class="card-body">' +

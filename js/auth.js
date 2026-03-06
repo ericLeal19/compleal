@@ -126,7 +126,7 @@ function atualizarHeaderAuth() {
 // Aguarda o header ser injetado via fetch antes de atualizar o botão
 function observarHeader() {
   if (document.getElementById('btn-header-auth')) { atualizarHeaderAuth(); return; }
-  const placeholder = document.getElementById('header-placeholder');
+  const placeholder = document.getElementById('cabeca-menu');
   if (!placeholder) return;
   const obs = new MutationObserver(function() {
     if (document.getElementById('btn-header-auth')) { obs.disconnect(); atualizarHeaderAuth(); }
