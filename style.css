@@ -68,7 +68,7 @@
 }
 
 .btn-cart {
-  background-color: #0d0b26;
+  background-color: var(--cor-primaria);
   color: white;
 }
 
@@ -77,7 +77,7 @@
 .product-price {
   font-size: 24px;
   font-weight: bold;
-  color: #0d0b26;
+  color: var(--cor-primaria);
   margin: 10px 0 5px;
 }
 
@@ -91,7 +91,7 @@
 }
 
 .estrelas {
-  color: #ff9113;
+  color: var(--cor-destaque);
   font-size: 18px;
   letter-spacing: 2px;
 
@@ -104,7 +104,7 @@
   border: none;
   font-weight: bold;
   cursor: pointer;
-  background-color: #ff9113;
+  background-color: var(--cor-destaque);
   color: white;
   text-decoration: none;
   display: inline-block;
@@ -128,8 +128,8 @@
 }
 
 .loading {
-  color: #0d0b26;
-  background: #f4f2ff;
+  color: var(--cor-primaria);
+  background: var(--cor-fundo);
 }
 
 .loading::after {
@@ -138,7 +138,7 @@
   width: 20px;
   height: 20px;
   margin-left: 10px;
-  border: 3px solid #0d0b26;
+  border: 3px solid var(--cor-primaria);
   border-radius: 50%;
   border-top-color: transparent;
   animation: spin 1s linear infinite;
@@ -159,7 +159,7 @@
 }
 
 .stars {
-  color: #ff9113;
+  color: var(--cor-destaque);
   font-size: 16px;
   letter-spacing: 1px;
 }
@@ -186,7 +186,7 @@
 .product-price {
   font-size: 22px;
   font-weight: bold;
-  color: #0d0b26;
+  color: var(--cor-primaria);
   margin: 8px 0 12px;
 }
 
@@ -209,7 +209,7 @@
   display: block;
   width: 100%;
   padding: 10px;
-  background-color: #ff9113;
+  background-color: var(--cor-destaque);
   color: white;
   border-radius: 20px;
   border: none;
@@ -222,7 +222,7 @@
 }
 
 .btn-ver-ml:hover {
-  background-color: #ff9113;
+  background-color: var(--cor-destaque);
 }
 
 /* --- BOTÃO FAVORITO --- */
@@ -266,7 +266,7 @@
     display: none;
     margin: 30px auto 0;
     padding: 10px 20px;
-    background-color: #0d0b26;
+    background-color: var(--cor-primaria);
     color: #FFF;
     border: none;
     border-radius: 20px;

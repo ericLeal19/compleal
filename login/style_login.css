@@ -2,7 +2,7 @@
 
     body {
       min-height: 100vh;
-      background: #f4f2ff;
+      background: var(--cor-fundo);
       display: flex;
       flex-direction: column;
     }
@@ -44,7 +44,7 @@
     }
 
     .tab.ativo {
-      color: #0d0b26;
+      color: var(--cor-primaria);
       border-bottom: 3px solid #FFE600;
       margin-bottom: -2px;
     }
@@ -122,7 +122,7 @@
       text-align: center; margin-top: 1rem;
       font-size: .875rem; color: #666;
     }
-    .trocar-form a { color: #0d0b26; font-weight: 700; cursor: pointer; }
+    .trocar-form a { color: var(--cor-primaria); font-weight: 700; cursor: pointer; }
 
     /* Perfil */
     .perfil-info { margin-bottom: 1.5rem; }
@@ -146,7 +146,7 @@
     }
 
     .btn-secundario {
-      padding: .7rem 1.5rem; background: #f4f2ff;
+      padding: .7rem 1.5rem; background: var(--cor-fundo);
       border: none; border-radius: 8px;
       font-weight: 600; cursor: pointer; font-size: .9rem;
     }

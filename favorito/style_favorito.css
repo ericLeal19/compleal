@@ -2,5 +2,5 @@
     text-align: center;
     font-size: 1.5rem;
     margin-bottom: 24px;
-    color: #0d0b26;
+    color: var(--cor-primaria);
 }
