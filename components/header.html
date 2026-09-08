@@ -15,6 +15,17 @@
         <ul class="nav-menu"> 
             <li class="item-menu"><a href="favorito/favorito.html" class="nav-link"><strong>Favoritos</strong></a></li>
             <li class="item-menu"><a href="ajuda/ajuda.html" class="nav-link"><strong>Ajuda</strong></a></li>
+            
+            <!-- Botão Dropdown de Idioma -->
+            <li class="item-menu dropdown-idioma">
+                <span class="nav-link" style="cursor: pointer;"><strong>🌐 Idioma ▾</strong></span>
+                <ul class="submenu-idioma">
+                    <li><a href="#" onclick="mudarIdiomaGoogle('pt')">Português (PT)</a></li>
+                    <li><a href="#" onclick="mudarIdiomaGoogle('en')">English (EN)</a></li>
+                    <li><a href="#" onclick="mudarIdiomaGoogle('es')">Español (ES)</a></li>
+                </ul>
+            </li>
+            
             <li class="item-menu"><a id="btn-header-auth" href="login/login.html" class="nav-link"></a></li>
         </ul>
     </div>
@@ -25,11 +36,6 @@
             <li><a href="ofertas/ofertas.html">Ofertas do Dia</a></li>
             <li><a href="mais_vendidos/mais_vendidos.html">Mais Vendidos</a></li>
             <li><a href="sobre/sobre.html">Sobre a Compleal</a></li>
-            
-            <!-- Botões de idioma corrigidos com a tag <li> -->
-            <li><a href="#" class="nav-link" onclick="mudarIdiomaGoogle('pt')">PT</a></li>
-            <li><a href="#" class="nav-link" onclick="mudarIdiomaGoogle('en')">EN</a></li>
-            <li><a href="#" class="nav-link" onclick="mudarIdiomaGoogle('es')">ES</a></li>
         </ul>
     </nav>
 </header>

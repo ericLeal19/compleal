@@ -6,11 +6,6 @@
     --cor-texto-escuro: #1c1a41;
 }
 
-#google_translate_element, 
-.goog-te-banner-frame,
-.skiptranslate {
-    display: none !important;
-}
 body {
     top: 0 !important;
 }
@@ -251,3 +246,56 @@ html, body {
         grid-template-columns: repeat(2, 1fr); /* 2 colunas no tablet */
     }
 }
+
+
+/* --- MENU DROPDOWN DE IDIOMA --- */
+
+#google_translate_element, 
+.goog-te-banner-frame,
+.skiptranslate {
+    display: none !important;
+}
+
+.dropdown-idioma {
+    position: relative; /* Mantém o submenu ancorado a este botão */
+}
+
+.submenu-idioma {
+    display: none; /* Escondido por padrão */
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background-color: var(--cor-primaria);
+    list-style: none;
+    padding: 10px 0;
+    margin: 0;
+    border-radius: 6px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+    min-width: 150px;
+    z-index: 100;
+}
+
+/* Mostra o submenu ao passar o mouse */
+.dropdown-idioma:hover .submenu-idioma {
+    display: block;
+}
+
+.submenu-idioma li {
+    padding: 0;
+}
+
+.submenu-idioma a {
+    color: white;
+    text-decoration: none;
+    display: block;
+    padding: 10px 20px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.submenu-idioma a:hover {
+    background-color: #3b4a52;
+    transition: background-color 0.2s;
+}
+
+
