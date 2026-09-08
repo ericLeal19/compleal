@@ -49,7 +49,7 @@
 <body>
     
     <div id="cabeca-menu"></div>
-
+    <div id="google_translate_element"></div>
     <main class="grade-produtos">
         <div id="info-produtos" class="produtos"></div>
         <button id="btn-ver-mais" class="btn-ver-mais">Ver mais ⌄</button>
@@ -61,6 +61,16 @@
     <script src="js/auth.js"></script>
     <script src="js/busca.js"></script>
 
+    <script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'pt', // Idioma original do site
+      includedLanguages: 'en,es,pt', // Idiomas que deseja disponibilizar (Inglês, Espanhol, Português)
+      layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+    }, 'google_translate_element');
+  }
+</script>
+<script type="text/javascript" src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
 
 </html>
