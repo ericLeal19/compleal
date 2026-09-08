@@ -45,3 +45,12 @@ function carregarComponentes() {
 }
 // Adicione isso no final do arquivo, após a função carregarComponentes
 document.addEventListener('DOMContentLoaded', carregarComponentes);
+
+function mudarIdiomaGoogle(idiomaDestino) {
+    // Altera o cookie para o formato /idioma_original/idioma_destino
+    document.cookie = `googtrans=/pt/${idiomaDestino}; path=/`;
+    document.cookie = `googtrans=/pt/${idiomaDestino}; path=/; domain=compleal.com.br`;
+    
+    // Recarrega a página para aplicar a tradução
+    window.location.reload();
+}

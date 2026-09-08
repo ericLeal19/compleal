@@ -6,6 +6,15 @@
     --cor-texto-escuro: #1c1a41;
 }
 
+#google_translate_element, 
+.goog-te-banner-frame,
+.skiptranslate {
+    display: none !important;
+}
+body {
+    top: 0 !important;
+}
+
 body {
     display: flex;
     flex-direction: column;
